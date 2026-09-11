@@ -49,7 +49,8 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-2 md:flex">
           <Link
-            to="/docs/quickstart"
+            to="/docs/$slug"
+            params={{ slug: "quickstart" }}
             className="rounded-md px-3 py-1.5 text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
           >
             Quickstart

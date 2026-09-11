@@ -93,7 +93,7 @@ function DocPageView() {
                 <p className="text-[13.5px] leading-relaxed text-foreground/85">{b.text}</p>
               </div>
             );
-          return <CodeBlock key={i} code={b.code} filename={b.filename} />;
+          return <CodeBlock key={i} code={b.code} {...(b.filename ? { filename: b.filename } : {})} />;
         })}
       </div>
 
