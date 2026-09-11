@@ -10,33 +10,131 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DemoRouteImport } from './routes/demo'
+import { Route as DocsRouteImport } from './routes/docs'
+import { Route as DemoIndexRouteImport } from './routes/demo.index'
+import { Route as DocsIndexRouteImport } from './routes/docs.index'
+import { Route as DocsSlugRouteImport } from './routes/docs.$slug'
+import { Route as DemoOccurrencesIdRouteImport } from './routes/demo.occurrences.$id'
+import { Route as DemoOperationsIndexRouteImport } from './routes/demo.operations.index'
+import { Route as DemoOperationsIdRouteImport } from './routes/demo.operations.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoIndexRoute = DemoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DocsIndexRoute = DocsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsSlugRoute = DocsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DemoOccurrencesIdRoute = DemoOccurrencesIdRouteImport.update({
+  id: '/occurrences/$id',
+  path: '/occurrences/$id',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoOperationsIndexRoute = DemoOperationsIndexRouteImport.update({
+  id: '/operations/',
+  path: '/operations/',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoOperationsIdRoute = DemoOperationsIdRouteImport.update({
+  id: '/operations/$id',
+  path: '/operations/$id',
+  getParentRoute: () => DemoRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/demo': typeof DemoRouteWithChildren
+  '/docs': typeof DocsRouteWithChildren
+  '/docs/$slug': typeof DocsSlugRoute
+  '/demo/': typeof DemoIndexRoute
+  '/docs/': typeof DocsIndexRoute
+  '/demo/occurrences/$id': typeof DemoOccurrencesIdRoute
+  '/demo/operations/$id': typeof DemoOperationsIdRoute
+  '/demo/operations/': typeof DemoOperationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/docs/$slug': typeof DocsSlugRoute
+  '/demo': typeof DemoIndexRoute
+  '/docs': typeof DocsIndexRoute
+  '/demo/occurrences/$id': typeof DemoOccurrencesIdRoute
+  '/demo/operations/$id': typeof DemoOperationsIdRoute
+  '/demo/operations': typeof DemoOperationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/demo': typeof DemoRouteWithChildren
+  '/docs': typeof DocsRouteWithChildren
+  '/docs/$slug': typeof DocsSlugRoute
+  '/demo/': typeof DemoIndexRoute
+  '/docs/': typeof DocsIndexRoute
+  '/demo/occurrences/$id': typeof DemoOccurrencesIdRoute
+  '/demo/operations/$id': typeof DemoOperationsIdRoute
+  '/demo/operations/': typeof DemoOperationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/demo'
+    | '/docs'
+    | '/docs/$slug'
+    | '/demo/'
+    | '/docs/'
+    | '/demo/occurrences/$id'
+    | '/demo/operations/$id'
+    | '/demo/operations/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/docs/$slug'
+    | '/demo'
+    | '/docs'
+    | '/demo/occurrences/$id'
+    | '/demo/operations/$id'
+    | '/demo/operations'
+  id:
+    | '__root__'
+    | '/'
+    | '/demo'
+    | '/docs'
+    | '/docs/$slug'
+    | '/demo/'
+    | '/docs/'
+    | '/demo/occurrences/$id'
+    | '/demo/operations/$id'
+    | '/demo/operations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DemoRoute: typeof DemoRouteWithChildren
+  DocsRoute: typeof DocsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +146,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/': {
+      id: '/demo/'
+      path: '/'
+      fullPath: '/demo/'
+      preLoaderRoute: typeof DemoIndexRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/docs/': {
+      id: '/docs/'
+      path: '/'
+      fullPath: '/docs/'
+      preLoaderRoute: typeof DocsIndexRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/$slug': {
+      id: '/docs/$slug'
+      path: '/$slug'
+      fullPath: '/docs/$slug'
+      preLoaderRoute: typeof DocsSlugRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/demo/occurrences/$id': {
+      id: '/demo/occurrences/$id'
+      path: '/occurrences/$id'
+      fullPath: '/demo/occurrences/$id'
+      preLoaderRoute: typeof DemoOccurrencesIdRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/operations/': {
+      id: '/demo/operations/'
+      path: '/operations'
+      fullPath: '/demo/operations/'
+      preLoaderRoute: typeof DemoOperationsIndexRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/operations/$id': {
+      id: '/demo/operations/$id'
+      path: '/operations/$id'
+      fullPath: '/demo/operations/$id'
+      preLoaderRoute: typeof DemoOperationsIdRouteImport
+      parentRoute: typeof DemoRoute
+    }
   }
 }
 
+interface DemoRouteChildren {
+  DemoIndexRoute: typeof DemoIndexRoute
+  DemoOccurrencesIdRoute: typeof DemoOccurrencesIdRoute
+  DemoOperationsIdRoute: typeof DemoOperationsIdRoute
+  DemoOperationsIndexRoute: typeof DemoOperationsIndexRoute
+}
+
+const DemoRouteChildren: DemoRouteChildren = {
+  DemoIndexRoute: DemoIndexRoute,
+  DemoOccurrencesIdRoute: DemoOccurrencesIdRoute,
+  DemoOperationsIdRoute: DemoOperationsIdRoute,
+  DemoOperationsIndexRoute: DemoOperationsIndexRoute,
+}
+
+const DemoRouteWithChildren = DemoRoute._addFileChildren(DemoRouteChildren)
+
+interface DocsRouteChildren {
+  DocsSlugRoute: typeof DocsSlugRoute
+  DocsIndexRoute: typeof DocsIndexRoute
+}
+
+const DocsRouteChildren: DocsRouteChildren = {
+  DocsSlugRoute: DocsSlugRoute,
+  DocsIndexRoute: DocsIndexRoute,
+}
+
+const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DemoRoute: DemoRouteWithChildren,
+  DocsRoute: DocsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
