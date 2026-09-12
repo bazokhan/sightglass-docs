@@ -10,58 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoRouteImport } from './routes/demo'
 import { Route as DocsRouteImport } from './routes/docs'
-import { Route as DemoIndexRouteImport } from './routes/demo.index'
-import { Route as DemoHealthRouteImport } from './routes/demo.health'
-import { Route as DemoQueriesRouteImport } from './routes/demo.queries'
-import { Route as DemoSecurityRouteImport } from './routes/demo.security'
-import { Route as DemoUsageRouteImport } from './routes/demo.usage'
 import { Route as DocsIndexRouteImport } from './routes/docs.index'
 import { Route as DocsSlugRouteImport } from './routes/docs.$slug'
-import { Route as DemoOccurrencesIdRouteImport } from './routes/demo.occurrences.$id'
-import { Route as DemoOperationsIndexRouteImport } from './routes/demo.operations.index'
-import { Route as DemoOperationsIdRouteImport } from './routes/demo.operations.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoRoute = DemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DocsRoute = DocsRouteImport.update({
   id: '/docs',
   path: '/docs',
   getParentRoute: () => rootRouteImport,
-} as any)
-const DemoIndexRoute = DemoIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoHealthRoute = DemoHealthRouteImport.update({
-  id: '/health',
-  path: '/health',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoQueriesRoute = DemoQueriesRouteImport.update({
-  id: '/queries',
-  path: '/queries',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoSecurityRoute = DemoSecurityRouteImport.update({
-  id: '/security',
-  path: '/security',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoUsageRoute = DemoUsageRouteImport.update({
-  id: '/usage',
-  path: '/usage',
-  getParentRoute: () => DemoRoute,
 } as any)
 const DocsIndexRoute = DocsIndexRouteImport.update({
   id: '/',
@@ -73,115 +34,35 @@ const DocsSlugRoute = DocsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => DocsRoute,
 } as any)
-const DemoOccurrencesIdRoute = DemoOccurrencesIdRouteImport.update({
-  id: '/occurrences/$id',
-  path: '/occurrences/$id',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoOperationsIndexRoute = DemoOperationsIndexRouteImport.update({
-  id: '/operations/',
-  path: '/operations/',
-  getParentRoute: () => DemoRoute,
-} as any)
-const DemoOperationsIdRoute = DemoOperationsIdRouteImport.update({
-  id: '/operations/$id',
-  path: '/operations/$id',
-  getParentRoute: () => DemoRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo': typeof DemoRouteWithChildren
   '/docs': typeof DocsRouteWithChildren
-  '/demo/health': typeof DemoHealthRoute
-  '/demo/queries': typeof DemoQueriesRoute
-  '/demo/security': typeof DemoSecurityRoute
-  '/demo/usage': typeof DemoUsageRoute
   '/docs/$slug': typeof DocsSlugRoute
-  '/demo/': typeof DemoIndexRoute
   '/docs/': typeof DocsIndexRoute
-  '/demo/occurrences/$id': typeof DemoOccurrencesIdRoute
-  '/demo/operations/$id': typeof DemoOperationsIdRoute
-  '/demo/operations/': typeof DemoOperationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/health': typeof DemoHealthRoute
-  '/demo/queries': typeof DemoQueriesRoute
-  '/demo/security': typeof DemoSecurityRoute
-  '/demo/usage': typeof DemoUsageRoute
   '/docs/$slug': typeof DocsSlugRoute
-  '/demo': typeof DemoIndexRoute
   '/docs': typeof DocsIndexRoute
-  '/demo/occurrences/$id': typeof DemoOccurrencesIdRoute
-  '/demo/operations/$id': typeof DemoOperationsIdRoute
-  '/demo/operations': typeof DemoOperationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo': typeof DemoRouteWithChildren
   '/docs': typeof DocsRouteWithChildren
-  '/demo/health': typeof DemoHealthRoute
-  '/demo/queries': typeof DemoQueriesRoute
-  '/demo/security': typeof DemoSecurityRoute
-  '/demo/usage': typeof DemoUsageRoute
   '/docs/$slug': typeof DocsSlugRoute
-  '/demo/': typeof DemoIndexRoute
   '/docs/': typeof DocsIndexRoute
-  '/demo/occurrences/$id': typeof DemoOccurrencesIdRoute
-  '/demo/operations/$id': typeof DemoOperationsIdRoute
-  '/demo/operations/': typeof DemoOperationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/demo'
-    | '/docs'
-    | '/demo/health'
-    | '/demo/queries'
-    | '/demo/security'
-    | '/demo/usage'
-    | '/docs/$slug'
-    | '/demo/'
-    | '/docs/'
-    | '/demo/occurrences/$id'
-    | '/demo/operations/$id'
-    | '/demo/operations/'
+  fullPaths: '/' | '/docs' | '/docs/$slug' | '/docs/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/demo/health'
-    | '/demo/queries'
-    | '/demo/security'
-    | '/demo/usage'
-    | '/docs/$slug'
-    | '/demo'
-    | '/docs'
-    | '/demo/occurrences/$id'
-    | '/demo/operations/$id'
-    | '/demo/operations'
-  id:
-    | '__root__'
-    | '/'
-    | '/demo'
-    | '/docs'
-    | '/demo/health'
-    | '/demo/queries'
-    | '/demo/security'
-    | '/demo/usage'
-    | '/docs/$slug'
-    | '/demo/'
-    | '/docs/'
-    | '/demo/occurrences/$id'
-    | '/demo/operations/$id'
-    | '/demo/operations/'
+  to: '/' | '/docs/$slug' | '/docs'
+  id: '__root__' | '/' | '/docs' | '/docs/$slug' | '/docs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoRoute: typeof DemoRouteWithChildren
   DocsRoute: typeof DocsRouteWithChildren
 }
 
@@ -194,54 +75,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo': {
-      id: '/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof DemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/docs': {
       id: '/docs'
       path: '/docs'
       fullPath: '/docs'
       preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/demo/': {
-      id: '/demo/'
-      path: '/'
-      fullPath: '/demo/'
-      preLoaderRoute: typeof DemoIndexRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/health': {
-      id: '/demo/health'
-      path: '/health'
-      fullPath: '/demo/health'
-      preLoaderRoute: typeof DemoHealthRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/queries': {
-      id: '/demo/queries'
-      path: '/queries'
-      fullPath: '/demo/queries'
-      preLoaderRoute: typeof DemoQueriesRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/security': {
-      id: '/demo/security'
-      path: '/security'
-      fullPath: '/demo/security'
-      preLoaderRoute: typeof DemoSecurityRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/usage': {
-      id: '/demo/usage'
-      path: '/usage'
-      fullPath: '/demo/usage'
-      preLoaderRoute: typeof DemoUsageRouteImport
-      parentRoute: typeof DemoRoute
     }
     '/docs/': {
       id: '/docs/'
@@ -257,53 +96,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsSlugRouteImport
       parentRoute: typeof DocsRoute
     }
-    '/demo/occurrences/$id': {
-      id: '/demo/occurrences/$id'
-      path: '/occurrences/$id'
-      fullPath: '/demo/occurrences/$id'
-      preLoaderRoute: typeof DemoOccurrencesIdRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/operations/': {
-      id: '/demo/operations/'
-      path: '/operations'
-      fullPath: '/demo/operations/'
-      preLoaderRoute: typeof DemoOperationsIndexRouteImport
-      parentRoute: typeof DemoRoute
-    }
-    '/demo/operations/$id': {
-      id: '/demo/operations/$id'
-      path: '/operations/$id'
-      fullPath: '/demo/operations/$id'
-      preLoaderRoute: typeof DemoOperationsIdRouteImport
-      parentRoute: typeof DemoRoute
-    }
   }
 }
-
-interface DemoRouteChildren {
-  DemoHealthRoute: typeof DemoHealthRoute
-  DemoQueriesRoute: typeof DemoQueriesRoute
-  DemoSecurityRoute: typeof DemoSecurityRoute
-  DemoUsageRoute: typeof DemoUsageRoute
-  DemoIndexRoute: typeof DemoIndexRoute
-  DemoOccurrencesIdRoute: typeof DemoOccurrencesIdRoute
-  DemoOperationsIdRoute: typeof DemoOperationsIdRoute
-  DemoOperationsIndexRoute: typeof DemoOperationsIndexRoute
-}
-
-const DemoRouteChildren: DemoRouteChildren = {
-  DemoHealthRoute: DemoHealthRoute,
-  DemoQueriesRoute: DemoQueriesRoute,
-  DemoSecurityRoute: DemoSecurityRoute,
-  DemoUsageRoute: DemoUsageRoute,
-  DemoIndexRoute: DemoIndexRoute,
-  DemoOccurrencesIdRoute: DemoOccurrencesIdRoute,
-  DemoOperationsIdRoute: DemoOperationsIdRoute,
-  DemoOperationsIndexRoute: DemoOperationsIndexRoute,
-}
-
-const DemoRouteWithChildren = DemoRoute._addFileChildren(DemoRouteChildren)
 
 interface DocsRouteChildren {
   DocsSlugRoute: typeof DocsSlugRoute
@@ -319,7 +113,6 @@ const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoRoute: DemoRouteWithChildren,
   DocsRoute: DocsRouteWithChildren,
 }
 export const routeTree = rootRouteImport

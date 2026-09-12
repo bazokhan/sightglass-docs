@@ -16,50 +16,38 @@ export function SiteFooter() {
             {B.positioning}
           </p>
         </div>
-
         <FooterCol title="Product">
           <Link to="/" className={linkClass}>
             Overview
           </Link>
-          <Link to="/demo" className={linkClass}>
-            Live demo
-          </Link>
-          <DocsLink slug="what-intent-is-not" className={linkClass}>
-            What it is not
+          <DocsLink slug="concepts" className={linkClass}>
+            Product model
           </DocsLink>
-          <DocsLink slug="deployment" className={linkClass}>
-            Deployment
+          <DocsLink slug="comparison" className={linkClass}>
+            Comparison
           </DocsLink>
         </FooterCol>
-
-        <FooterCol title="Docs">
+        <FooterCol title="Documentation">
           <DocsLink slug="quickstart" className={linkClass}>
             Quickstart
           </DocsLink>
-          <DocsLink slug="nestjs" className={linkClass}>
-            NestJS
+          <DocsLink slug="frameworks" className={linkClass}>
+            Framework adapters
           </DocsLink>
-          <DocsLink slug="nextjs" className={linkClass}>
-            Next.js
-          </DocsLink>
-          <DocsLink slug="metering" className={linkClass}>
-            Metering
+          <DocsLink slug="configuration" className={linkClass}>
+            SDK configuration
           </DocsLink>
         </FooterCol>
-
-        <FooterCol title="Demo">
-          <Link to="/demo/operations" className={linkClass}>
+        <FooterCol title="Operate">
+          <DocsLink slug="operations" className={linkClass}>
             Operations
-          </Link>
-          <Link to="/demo/queries" className={linkClass}>
-            Queries
-          </Link>
-          <Link to="/demo/usage" className={linkClass}>
-            Usage
-          </Link>
-          <Link to="/demo/health" className={linkClass}>
-            Health
-          </Link>
+          </DocsLink>
+          <DocsLink slug="api" className={linkClass}>
+            HTTP API
+          </DocsLink>
+          <DocsLink slug="benchmarks" className={linkClass}>
+            Benchmarks
+          </DocsLink>
         </FooterCol>
       </div>
       <div className="border-t border-border/70">
@@ -67,9 +55,9 @@ export function SiteFooter() {
           <span>
             {B.name} — {B.tagline}
           </span>
-          <span className="font-mono">
-            Concept site. {B.demoApp} data is seeded and fictional.
-          </span>
+          <a className="font-mono hover:text-primary" href="https://github.com/bazokhan/sightglass">
+            MIT licensed · GitHub
+          </a>
         </div>
       </div>
     </footer>

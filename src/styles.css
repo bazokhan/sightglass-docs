@@ -62,8 +62,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans:
-    "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -159,4 +158,91 @@
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
+}
+
+@layer components {
+  .docs-prose {
+    color: color-mix(in oklch, var(--foreground) 86%, transparent);
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .docs-prose h2 {
+    margin: 2rem 0 0.65rem;
+    color: var(--foreground);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .docs-prose h3 {
+    margin: 1.5rem 0 0.5rem;
+    color: var(--foreground);
+    font-size: 0.925rem;
+    font-weight: 600;
+  }
+  .docs-prose p,
+  .docs-prose ul,
+  .docs-prose ol,
+  .docs-prose table {
+    margin: 0.75rem 0 1rem;
+  }
+  .docs-prose ul,
+  .docs-prose ol {
+    padding-left: 1.35rem;
+  }
+  .docs-prose li {
+    margin: 0.3rem 0;
+  }
+  .docs-prose a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .docs-prose code {
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    background: var(--surface-2);
+    padding: 0.1rem 0.3rem;
+    color: var(--primary);
+    font: 0.82em var(--font-mono);
+  }
+  .docs-prose pre {
+    margin: 1rem 0 1.25rem;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: oklch(0.145 0.008 250);
+    padding: 1rem;
+  }
+  .docs-prose pre code {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--foreground);
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+  .docs-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .docs-prose th,
+  .docs-prose td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .docs-prose th {
+    color: var(--muted-foreground);
+    font: 500 0.7rem var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .docs-prose blockquote {
+    margin: 1rem 0;
+    border-left: 2px solid var(--primary);
+    background: color-mix(in oklch, var(--primary) 7%, transparent);
+    padding: 0.75rem 1rem;
+  }
 }

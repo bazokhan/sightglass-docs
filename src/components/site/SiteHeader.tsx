@@ -8,8 +8,24 @@ export function Mark({ className }: { className?: string }) {
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
       <svg viewBox="0 0 24 24" className="size-[18px]" aria-hidden="true">
-        <rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="none" stroke="currentColor" strokeOpacity="0.35" />
-        <path d="M6 15.5h4.2l1.9-7 1.9 4.2H18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <rect
+          x="1.5"
+          y="1.5"
+          width="21"
+          height="21"
+          rx="5"
+          fill="none"
+          stroke="currentColor"
+          strokeOpacity="0.35"
+        />
+        <path
+          d="M6 15.5h4.2l1.9-7 1.9 4.2H18"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
       <span className="text-[15px] font-semibold tracking-tight">{B.name}</span>
     </span>
@@ -19,7 +35,6 @@ export function Mark({ className }: { className?: string }) {
 const links = [
   { to: "/", label: "Product", exact: true },
   { to: "/docs", label: "Docs", exact: false },
-  { to: "/demo", label: "Live demo", exact: false },
 ];
 
 export function SiteHeader() {
@@ -55,12 +70,12 @@ export function SiteHeader() {
           >
             Quickstart
           </Link>
-          <Link
-            to="/demo"
+          <a
+            href="https://github.com/bazokhan/sightglass"
             className="rounded-md bg-primary px-3 py-1.5 text-[13.5px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Open live demo
-          </Link>
+            GitHub
+          </a>
         </div>
 
         <button

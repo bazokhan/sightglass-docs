@@ -26,8 +26,8 @@ function DocsIndex() {
     <div>
       <h1 className="text-2xl font-semibold tracking-tight">Documentation</h1>
       <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-muted-foreground">
-        {B.name} is one container and one SDK call per operation you care about. Start with the
-        quickstart; read “What {B.name} is not” before you decide it's the wrong tool.
+        {B.name} is one container plus explicit SDK instrumentation for the operations you care
+        about. Start with the quickstart, then choose the adapter for your framework.
       </p>
 
       <div className="mt-8 space-y-8">
