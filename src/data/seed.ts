@@ -839,7 +839,7 @@ export const health: ServiceHealth[] = [
   },
 ];
 
-export const hostDisk = { usedGb: 41.2, totalGb: 100, dataFile: "/data/intent.db", dbSizeGb: 12.8 };
+export const hostDisk = { usedGb: 41.2, totalGb: 100, dataFile: "/data/sightglass.db", dbSizeGb: 12.8 };
 
 /** Deterministic 24h traffic sparkline (calls per hour, production). */
 export const trafficSeries = [

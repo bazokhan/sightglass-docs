@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Intent design system — dark-first developer tool aesthetic.
+ * Sightglass design system — dark-first developer tool aesthetic.
  * All colors are oklch semantic tokens. Never hardcode colors in components.
  */
 
