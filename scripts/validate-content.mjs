@@ -5,7 +5,15 @@ const directory = resolve("content/docs");
 const files = readdirSync(directory).filter((file) => file.endsWith(".md"));
 const slugs = new Set();
 const orders = new Set();
-const forbidden = [/INTENT_/i, /@sightglass\/node/i, /Acme Cloud/i, /seeded demo/i, /fictional/i];
+const forbidden = [
+  /INTENT_/i,
+  /@sightglass\//i,
+  /sightglasshq\//i,
+  /sightglass-observability-without-noise/i,
+  /Acme Cloud/i,
+  /seeded demo/i,
+  /fictional/i,
+];
 
 for (const file of files) {
   const content = readFileSync(resolve(directory, file), "utf8");
@@ -50,6 +58,14 @@ for (const option of [
   "onTelemetryError",
 ]) {
   if (!config.includes(`\`${option}\``)) throw new Error(`SDK configuration omits ${option}`);
+}
+
+for (const artifact of ["public/llms.txt", "public/llms-full.txt"]) {
+  const generated = readFileSync(resolve(artifact), "utf8");
+  if (!generated.includes("Sightglass")) throw new Error(`${artifact} was not generated correctly`);
+}
+if (!readFileSync(resolve("public/sitemap.xml"), "utf8").includes("sightglass-docs.vercel.app")) {
+  throw new Error("public/sitemap.xml was not generated correctly");
 }
 
 console.log(`Validated ${files.length} canonical documentation pages.`);

@@ -1,0 +1,368 @@
+# Quickstart
+
+Run Sightglass and observe one important operation in a few minutes.
+
+Source: https://sightglass-docs.vercel.app/docs/quickstart
+
+Sightglass is one container plus the SDK packages your application needs. Installing an SDK is silent until you explicitly wrap an operation.
+
+![Sightglass operations dashboard with sample execution, latency, and error data](/product/operations.svg)
+
+## Run the server
+
+```bash
+docker run -d --name sightglass \
+  -p 7777:7777 \
+  -v sightglass-data:/data \
+  -e SIGHTGLASS_API_KEY=replace-me \
+  bazokhan/sightglass:0.1.0
+```
+
+Open `http://localhost:7777`. Keep this port on a trusted network because the API key protects ingestion, not dashboard reads.
+
+## Install the SDK
+
+For plain Node.js, install core:
+
+```bash
+npm install @bazokhan/sightglass-core
+```
+
+For a framework, install core and the adapter, for example:
+
+```bash
+npm install @bazokhan/sightglass-core @bazokhan/sightglass-express
+```
+
+## Configure once
+
+```ts
+import { configureSightglass } from "@bazokhan/sightglass-core";
+
+configureSightglass({
+  service: "billing-api",
+  environment: "production",
+  endpoint: "http://sightglass:7777",
+  apiKey: process.env.SIGHTGLASS_API_KEY,
+});
+```
+
+## Observe one operation
+
+```ts
+import { observe } from "@bazokhan/sightglass-core";
+
+const checkout = observe("checkout", async () => {
+  observe.set({ tenantId: "tenant-42", plan: "pro" });
+  const order = await observe.step("create-order", createOrder);
+  observe.event("order.created", { orderId: order.id });
+  return order;
+});
+
+const result = await checkout();
+```
+
+Unwrapped work stays invisible. Before process exit, stop accepting work and call `await shutdownSightglass()` to drain buffered telemetry.
+
+---
+
+# Product model
+
+Understand operations, occurrences, context, events, steps, dependencies, and meters.
+
+Source: https://sightglass-docs.vercel.app/docs/concepts
+
+Sightglass records only business operations you deliberately mark. Its primary record is an information-dense occurrence rather than a stream of logs, spans, or arbitrary metrics.
+
+## Operations and occurrences
+
+An **operation** is a named unit of work such as checkout, report generation, or a background job. An **occurrence** is one execution with duration, status, context, events, steps, database work, outbound calls, and error details.
+
+![Sightglass occurrence detail with sample context, steps, database work, and a usage meter](/product/occurrence.svg)
+
+## Context, events, and steps
+
+- Context is bounded business metadata attached with `observe.set()`.
+- Events are meaningful moments attached with `observe.event()`.
+- Steps time named child work attached with `observe.step()`.
+- Prisma and native fetch detail are captured only while an observed operation is active.
+
+## Usage meters
+
+![Sightglass usage meter ledger with representative per-tenant usage](/product/meters.svg)
+
+`observe.meter()` appends an idempotent usage record to a durable local spool before delivery. The server retains exact meter rows and compact hourly meter totals indefinitely. Sightglass reports usage; it does not price, invoice, or charge customers.
+
+## Deliberate limits
+
+Sightglass is not log aggregation, browser monitoring, infrastructure monitoring, blanket APM auto-instrumentation, a general metrics database, or an incident-management system. Next.js Server Actions are intentionally unsupported; use Route Handlers.
+
+---
+
+# Framework adapters
+
+Instrument Express, tsoa, Fastify, NestJS, Next.js Route Handlers, and Prisma.
+
+Source: https://sightglass-docs.vercel.app/docs/frameworks
+
+Every adapter depends on `@bazokhan/sightglass-core`. Install only the adapter your application uses.
+
+## Express and tsoa
+
+```ts
+import { configureSightglass, observe as sightglass } from "@bazokhan/sightglass-core";
+import { observe } from "@bazokhan/sightglass-express";
+
+configureSightglass({ service: "billing-api", endpoint: "http://sightglass:7777" });
+app.post("/checkout", observe("checkout"), async (request, response) => {
+  sightglass.set({ tenantId: request.user.tenantId });
+  response.sendStatus(201);
+});
+```
+
+The `@Observe()` method decorator from `@bazokhan/sightglass-express` also supports tsoa controllers. Pair it with selected Express middleware when route or response status metadata is needed.
+
+## Fastify
+
+```ts
+import { observe, sightglass } from "@bazokhan/sightglass-fastify";
+
+await app.register(sightglass({ service: "billing-api", endpoint: "http://sightglass:7777" }));
+app.post("/checkout", {
+  handler: observe("checkout", async (_request, reply) => reply.code(201).send()),
+});
+```
+
+## NestJS
+
+Import `SightglassModule.forRoot(...)`, decorate a controller or method with `@Observe("name")`, and use `@NoObserve()` for exclusions. The module registers the interceptor globally and drains telemetry during application shutdown.
+
+## Next.js
+
+```ts
+import { observe } from "@bazokhan/sightglass-next";
+
+export const POST = observe("checkout", async () => Response.json({ ok: true }));
+```
+
+Only server Route Handlers are supported. Page rendering, React Server Components, static assets, prefetching, browser activity, and Server Actions are not observed.
+
+## Prisma
+
+```ts
+import { withSightglass } from "@bazokhan/sightglass-prisma";
+const prisma = withSightglass(new PrismaClient());
+```
+
+The extension records model/action timing inside an active operation. It never stores SQL, bind parameters, or results.
+
+---
+
+# SDK configuration
+
+Configure delivery, bounds, durability, fetch enrichment, health samples, and diagnostics.
+
+Source: https://sightglass-docs.vercel.app/docs/configuration
+
+`configureSightglass()` accepts these options:
+
+| Option                         | Purpose                                             |
+| ------------------------------ | --------------------------------------------------- |
+| `service`                      | Required service name attached to telemetry.        |
+| `endpoint`                     | Sightglass server origin.                           |
+| `environment`                  | Deployment environment label.                       |
+| `apiKey`                       | Bearer credential for ingestion.                    |
+| `batchSize`                    | Maximum records sent per batch.                     |
+| `flushIntervalMs`              | Maximum ordinary batching delay.                    |
+| `maxQueueSize`                 | In-memory occurrence queue bound.                   |
+| `requestTimeoutMs`             | Delivery request deadline.                          |
+| `retryBaseMs` and `retryMaxMs` | Exponential retry bounds.                           |
+| `meterSpoolDirectory`          | Durable meter spool path, or `false` to opt out.    |
+| `meters`                       | Declared meter units.                               |
+| `fetchInstrumentation`         | Native fetch attribution inside active operations.  |
+| `healthIntervalMs`             | Process and host health sampling interval.          |
+| `onTelemetryError`             | Isolated diagnostic callback for delivery failures. |
+
+Context and event attributes accept at most 32 entries. Keys are limited to 64 characters, strings to 512 characters, and event or step names to 128 characters. Request bodies, headers, cookies, SQL, bind values, and query results are never captured automatically.
+
+---
+
+# HTTP API
+
+Reference the versioned ingestion, dashboard, trace, usage, and health endpoints.
+
+Source: https://sightglass-docs.vercel.app/docs/api
+
+All timestamps are ISO 8601. Range endpoints accept optional `from` and `to` values and default to the last 24 hours. `service` and `environment` filters have the same meaning everywhere.
+
+## Ingestion
+
+`POST /api/v1/ingest` accepts protocol v1 envelopes and returns HTTP 202 with accepted item counts. When `SIGHTGLASS_API_KEY` is configured, send `Authorization: Bearer <key>`.
+
+## Read and export endpoints
+
+- `GET /healthz`
+- `GET /api/v1/services`
+- `GET /api/v1/summary`
+- `GET /api/v1/trend`
+- `GET /api/v1/occurrences`
+- `GET /api/v1/occurrences/:id`
+- `GET /api/v1/traces/:traceId`
+- `GET /api/v1/database`
+- `GET /api/v1/dependencies`
+- `GET /api/v1/usage`
+- `GET /api/v1/usage/trend`
+- `GET /api/v1/usage/export`
+- `GET /api/v1/health`
+
+Occurrence lists accept `operation`, `status`, `limit`, and `offset`; `limit` is capped at 200. Usage accepts `tenantId`. Export returns CSV by default and JSON with `format=json`.
+
+Read endpoints are intentionally unauthenticated inside Sightglass. Keep the server private or place an authenticating reverse proxy in front of every read and dashboard request.
+
+---
+
+# Ingestion protocol
+
+Understand protocol v1 envelopes, validation, limits, and trace correlation.
+
+Source: https://sightglass-docs.vercel.app/docs/protocol
+
+The SDK sends protocol v1 envelopes containing `occurrences`, `meters`, and `health` arrays. The body limit is 1 MiB. A batch accepts at most 100 occurrences, 500 meter events, and 100 health samples.
+
+Invalid envelopes are rejected atomically with HTTP 400. Successful ingestion returns HTTP 202. Meter IDs are idempotency keys, so retries do not double-count exact usage.
+
+Occurrences carry W3C-compatible trace, span, and optional parent identifiers. Sightglass reconstructs distributed operation trees from correlated occurrences and includes database and outbound dependency children in the detail view.
+
+---
+
+# Operating Sightglass
+
+Deploy securely, retain data, back up SQLite, restore safely, and upgrade.
+
+Source: https://sightglass-docs.vercel.app/docs/operations
+
+## Server configuration
+
+```env
+SIGHTGLASS_PORT=7777
+SIGHTGLASS_DATABASE_PATH=/data/sightglass.db
+SIGHTGLASS_API_KEY=replace-me
+SIGHTGLASS_SUCCESS_RETENTION_DAYS=7
+SIGHTGLASS_ERROR_RETENTION_DAYS=30
+SIGHTGLASS_AGGREGATE_RETENTION_DAYS=365
+```
+
+## Security boundary
+
+The API key authenticates ingestion only. Bind Sightglass to a trusted private network or put it behind a reverse proxy that authenticates all dashboard and read API requests. Terminate TLS at that boundary.
+
+## Persistence and recovery
+
+SQLite runs in WAL mode at `/data/sightglass.db`. Use SQLite's online backup operation while the service is running, or stop the container before copying the database plus its `-wal` and `-shm` companions. Never copy only the main database while writes continue.
+
+Restore while Sightglass is stopped, then start the same or a newer image. Ordered schema migrations run transactionally at startup. Back up before upgrading, and do not downgrade an upgraded database without restoring a matching backup.
+
+Successful raw occurrences default to 7 days, errors to 30 days, and ordinary aggregates and health samples to 365 days. Exact meter rows and compact meter totals are retained indefinitely.
+
+---
+
+# Architecture
+
+See how explicit application instrumentation reaches the single-process SQLite server.
+
+Source: https://sightglass-docs.vercel.app/docs/architecture
+
+Sightglass has three runtime layers:
+
+1. A framework adapter or `@bazokhan/sightglass-core` opens an explicit operation context with `AsyncLocalStorage`.
+2. The SDK bounds and batches ordinary occurrences while durable meter events are first written to the local spool.
+3. One Node.js server validates protocol v1, writes SQLite in WAL mode, computes aggregates, and serves the React dashboard on port 7777.
+
+There is no collector, host daemon, external queue, metrics database, dashboard builder, or query language. Database and native fetch attribution activate only within an observed operation.
+
+The deployment boundary is one process, one port, one SQLite file, one persistent volume, and one container.
+
+---
+
+# Reproducible benchmarks
+
+Interpret and reproduce Sightglass ingestion, query, and storage measurements.
+
+Source: https://sightglass-docs.vercel.app/docs/benchmarks
+
+The benchmark suite builds the real server, creates isolated temporary databases, and records raw samples before generating summary tables and SVG charts. It measures HTTP ingestion, representative dashboard queries, and SQLite storage footprint.
+
+The current reference was measured 12 September 2026 on Node.js 24.18.0, Windows x64, an Intel Core i5-10300H with 8 logical CPUs, and 16 GB RAM.
+
+| Path                           |              Median |          p95 sample |
+| ------------------------------ | ------------------: | ------------------: |
+| In-memory SQLite ingest        | 2,713 occurrences/s | 2,833 occurrences/s |
+| SQLite WAL ingest              | 2,301 occurrences/s | 2,437 occurrences/s |
+| Exact meter ledger             |      8,867 meters/s |     10,357 meters/s |
+| HTTP + JSON + validation + WAL | 1,586 occurrences/s | 1,758 occurrences/s |
+
+![Measured ingestion throughput](/benchmarks/throughput.svg)
+
+| Dashboard query over 25,000 operations |  Median |      p95 |
+| -------------------------------------- | ------: | -------: |
+| Overview summary                       | 5.81 ms | 11.52 ms |
+| Occurrence list                        | 0.36 ms |  0.50 ms |
+| Occurrence detail                      | 0.06 ms |  0.23 ms |
+| Database ranking                       | 0.22 ms |  0.27 ms |
+| Dependency ranking                     | 0.24 ms |  0.32 ms |
+| Usage totals                           | 0.97 ms |  1.54 ms |
+
+![Measured dashboard query latency](/benchmarks/query-latency.svg)
+
+Run it from the main source repository:
+
+```bash
+npm run benchmark
+```
+
+The checked-in evidence is a regression reference, not a universal capacity promise. Results depend on CPU, filesystem, container limits, payload shape, cardinality, retention, and concurrent application traffic. Load-test with production storage and resource limits before sizing a deployment.
+
+The [machine-readable result](/benchmarks/latest.json) includes every raw sample, descriptive statistics, settings, and environment details.
+
+---
+
+# Focused product comparison
+
+Compare Sightglass with ten broader observability products using narrow, explicit definitions.
+
+Source: https://sightglass-docs.vercel.app/docs/comparison
+
+Checked 12 September 2026 against official public pricing, deployment, and licensing material. `✓` means native, `◐` means partial or configurable, and `×` means absent or not a core product capability.
+
+| Product               | Deployment                 | Public starting price              | OSS | Opt-in | Events | Exact ledger | Traces | DB/deps | Health | 1 container | No daemon |
+| --------------------- | -------------------------- | ---------------------------------- | :-: | :----: | :----: | :----------: | :----: | :-----: | :----: | :---------: | :-------: |
+| **Sightglass**        | Self-host, one container   | Free; infrastructure only          |  ✓  |   ✓    |   ✓    |      ✓       |   ✓    |    ✓    |   ✓    |      ✓      |     ✓     |
+| Datadog APM           | SaaS + host agent          | From $31/host/mo annual            |  ×  |   ×    |   ✓    |      ×       |   ✓    |    ✓    |   ✓    |      ×      |     ×     |
+| New Relic             | SaaS + app/host agents     | Free tier; $0.40/GB + access       |  ×  |   ×    |   ✓    |      ×       |   ✓    |    ✓    |   ✓    |      ×      |     ◐     |
+| Honeycomb             | SaaS, SDK/OTel             | Free; Pro from $150/mo             |  ×  |   ◐    |   ✓    |      ×       |   ✓    |    ◐    |   ◐    |      ×      |     ✓     |
+| Grafana               | Cloud or self-host stack   | OSS free; Cloud $19 + usage        |  ✓  |   ×    |   ◐    |      ×       |   ✓    |    ◐    |   ✓    |      ×      |     ×     |
+| Sentry                | SaaS or self-host stack    | Free; Team $26/mo                  |  ×  |   ◐    |   ◐    |      ×       |   ✓    |    ✓    |   ◐    |      ×      |     ✓     |
+| Dynatrace             | SaaS or Managed + OneAgent | $58/8-GiB host/mo                  |  ×  |   ×    |   ✓    |      ×       |   ✓    |    ✓    |   ✓    |      ×      |     ×     |
+| SigNoz                | Cloud or self-host stack   | Community free; Cloud $49/mo       |  ✓  |   ×    |   ◐    |      ×       |   ✓    |    ✓    |   ✓    |      ×      |     ×     |
+| Better Stack          | SaaS + optional collector  | Free; bundles from $25/mo annual   |  ×  |   ×    |   ◐    |      ×       |   ✓    |    ✓    |   ✓    |      ×      |     ◐     |
+| Elastic Observability | Cloud or self-host stack   | Self-host free; Cloud usage-priced |  ✓  |   ×    |   ✓    |      ×       |   ✓    |    ✓    |   ✓    |      ×      |     ×     |
+| Uptrace               | Cloud or self-host stack   | Community free; 50 GB Cloud free   |  ✓  |   ◐    |   ◐    |      ×       |   ✓    |    ✓    |   ✓    |      ×      |     ✓     |
+
+Definitions are deliberately narrow. **Opt-in** means unselected routes remain silent. **Exact ledger** means an idempotent, exportable business-usage ledger rather than ordinary custom metrics. **One container** means server, storage, API, and UI deploy together. **No daemon** allows an in-process SDK but no required host collector.
+
+Larger platforms add logs, RUM, synthetics, alerting, security, incident management, and enterprise access controls that Sightglass does not claim.
+
+## Official sources
+
+- [Datadog APM pricing](https://www.datadoghq.com/pricing/?product=apm)
+- [New Relic pricing](https://newrelic.com/pricing) and [agent installation](https://docs.newrelic.com/docs/new-relic-solutions/get-started/manual-installation/)
+- [Honeycomb pricing](https://www.honeycomb.io/pricing)
+- [Grafana pricing](https://grafana.com/pricing/) and [deployment options](https://grafana.com/grafana/deployment-options/)
+- [Sentry pricing](https://sentry.io/pricing/) and [self-hosting license note](https://github.com/getsentry/develop/blob/master/src/docs/self-hosted/index.mdx)
+- [Dynatrace pricing](https://www.dynatrace.com/pricing/) and [Managed deployment](https://docs.dynatrace.com/managed)
+- [SigNoz editions](https://signoz.io/pricing/)
+- [Better Stack pricing](https://betterstack.com/pricing) and [collector model](https://betterstack.com/docs/logs/collector/)
+- [Elastic pricing](https://www.elastic.co/pricing/) and [self-managed editions](https://www.elastic.co/pricing/self-managed)
+- [Uptrace pricing](https://uptrace.dev/pricing) and [AGPL project](https://github.com/uptrace/uptrace)
+
+Prices are USD list prices where available, exclude infrastructure and negotiated discounts, and can change. The linked vendor pages are authoritative.

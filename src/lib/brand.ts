@@ -7,11 +7,11 @@ export const brand = {
   nameLower: "sightglass",
   tagline: "Mark what matters. We show you what happened.",
   positioning: "Application observability for developers who don't want an observability stack.",
-  npmScope: "@sightglass",
-  npmPackage: "@sightglass/core",
-  dockerImage: "sightglasshq/sightglass",
+  npmScope: "@bazokhan",
+  npmPackage: "@bazokhan/sightglass-core",
+  dockerImage: "bazokhan/sightglass",
   port: 7777,
-  docsUrl: "https://sightglass-observability-without-noise.vercel.app",
+  docsUrl: "https://sightglass-docs.vercel.app",
 } as const;
 
 export const B = brand;

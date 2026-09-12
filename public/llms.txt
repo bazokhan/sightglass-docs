@@ -1,0 +1,25 @@
+# Sightglass
+
+> Application observability for developers who do not want an observability stack.
+
+Sightglass is an open-source, self-hosted TypeScript observability tool. It records only explicitly observed operations, their steps, database and outbound-call attribution, and durable usage meters.
+
+## Documentation
+
+- [Quickstart](https://sightglass-docs.vercel.app/docs/quickstart.md): Run Sightglass and observe one important operation in a few minutes.
+- [Product model](https://sightglass-docs.vercel.app/docs/concepts.md): Understand operations, occurrences, context, events, steps, dependencies, and meters.
+- [Framework adapters](https://sightglass-docs.vercel.app/docs/frameworks.md): Instrument Express, tsoa, Fastify, NestJS, Next.js Route Handlers, and Prisma.
+- [SDK configuration](https://sightglass-docs.vercel.app/docs/configuration.md): Configure delivery, bounds, durability, fetch enrichment, health samples, and diagnostics.
+- [HTTP API](https://sightglass-docs.vercel.app/docs/api.md): Reference the versioned ingestion, dashboard, trace, usage, and health endpoints.
+- [Ingestion protocol](https://sightglass-docs.vercel.app/docs/protocol.md): Understand protocol v1 envelopes, validation, limits, and trace correlation.
+- [Operating Sightglass](https://sightglass-docs.vercel.app/docs/operations.md): Deploy securely, retain data, back up SQLite, restore safely, and upgrade.
+- [Architecture](https://sightglass-docs.vercel.app/docs/architecture.md): See how explicit application instrumentation reaches the single-process SQLite server.
+- [Reproducible benchmarks](https://sightglass-docs.vercel.app/docs/benchmarks.md): Interpret and reproduce Sightglass ingestion, query, and storage measurements.
+- [Focused product comparison](https://sightglass-docs.vercel.app/docs/comparison.md): Compare Sightglass with ten broader observability products using narrow, explicit definitions.
+
+## Source and packages
+
+- Source: https://github.com/bazokhan/sightglass
+- Documentation source: https://github.com/bazokhan/sightglass-docs
+- Core SDK: https://www.npmjs.com/package/@bazokhan/sightglass-core
+- Docker: https://hub.docker.com/r/bazokhan/sightglass

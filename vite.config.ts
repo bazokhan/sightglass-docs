@@ -1,10 +1,8 @@
-import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
-import { nitro } from "nitro/vite";
-import { defineConfig } from "vite";
+// Lovable's adapter provides TanStack Start, React, Tailwind, Nitro, env handling,
+// and tsconfig path resolution. Keeping this as the build entrypoint means the
+// same repository works in Lovable, Vercel, and a local checkout.
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  resolve: { tsconfigPaths: true },
-  plugins: [tanstackStart({ server: { entry: "server" } }), nitro(), tailwindcss(), viteReact()],
+  tanstackStart: { server: { entry: "server" } },
 });

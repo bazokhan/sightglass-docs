@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bot, FileText } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { docs, findDoc } from "@/data/docs";
@@ -20,6 +20,15 @@ export const Route = createFileRoute("/docs/$slug")({
           { property: "og:description", content: loaderData.doc.summary },
         ]
       : [{ title: `Page not found — ${B.name} docs` }, { name: "robots", content: "noindex" }],
+    links: loaderData
+      ? [
+          {
+            rel: "alternate",
+            type: "text/markdown",
+            href: `/docs/${loaderData.doc.slug}.md`,
+          },
+        ]
+      : [],
   }),
   notFoundComponent: () => (
     <div>
@@ -38,25 +47,39 @@ function DocPageView() {
   const previous = docs[index - 1];
   const next = docs[index + 1];
   return (
-    <article className="max-w-3xl">
+    <article className="min-w-0 max-w-3xl">
       <p className="font-mono text-[11px] uppercase tracking-wider text-primary">{doc.group}</p>
       <h1 className="mt-1.5 text-3xl font-semibold tracking-tight">{doc.title}</h1>
       <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{doc.summary}</p>
+      <div className="mt-4 flex flex-wrap gap-2 font-mono text-[11px]">
+        <a
+          href={`/docs/${doc.slug}.md`}
+          className="inline-flex items-center gap-1.5 rounded border border-border bg-surface px-2.5 py-1.5 text-muted-foreground hover:border-primary/40 hover:text-primary"
+        >
+          <FileText className="size-3" /> View Markdown
+        </a>
+        <a
+          href="/llms.txt"
+          className="inline-flex items-center gap-1.5 rounded border border-border bg-surface px-2.5 py-1.5 text-muted-foreground hover:border-primary/40 hover:text-primary"
+        >
+          <Bot className="size-3" /> LLM index
+        </a>
+      </div>
       <div className="docs-prose mt-9">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{doc.content}</ReactMarkdown>
       </div>
       <nav
-        className="mt-12 flex items-center justify-between gap-4 border-t border-border pt-5"
+        className="mt-12 flex min-w-0 items-center justify-between gap-4 border-t border-border pt-5"
         aria-label="Documentation pages"
       >
         {previous ? (
           <Link
             to="/docs/$slug"
             params={{ slug: previous.slug }}
-            className="inline-flex items-center gap-2 text-[13.5px] text-muted-foreground hover:text-foreground"
+            className="min-w-0 inline-flex items-center gap-2 text-[13.5px] text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-3.5" />
-            {previous.title}
+            <span className="truncate">{previous.title}</span>
           </Link>
         ) : (
           <span />
@@ -65,9 +88,9 @@ function DocPageView() {
           <Link
             to="/docs/$slug"
             params={{ slug: next.slug }}
-            className="inline-flex items-center gap-2 text-[13.5px] text-muted-foreground hover:text-foreground"
+            className="min-w-0 inline-flex items-center gap-2 text-right text-[13.5px] text-muted-foreground hover:text-foreground"
           >
-            {next.title}
+            <span className="truncate">{next.title}</span>
             <ArrowRight className="size-3.5" />
           </Link>
         ) : (

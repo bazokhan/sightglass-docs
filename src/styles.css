@@ -131,6 +131,13 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  html,
+  body,
+  #root {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -162,6 +169,9 @@
 
 @layer components {
   .docs-prose {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     color: color-mix(in oklch, var(--foreground) 86%, transparent);
     font-size: 0.9rem;
     line-height: 1.75;
@@ -204,8 +214,11 @@
     padding: 0.1rem 0.3rem;
     color: var(--primary);
     font: 0.82em var(--font-mono);
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   .docs-prose pre {
+    max-width: 100%;
     margin: 1rem 0 1.25rem;
     overflow-x: auto;
     border: 1px solid var(--border);
@@ -220,8 +233,14 @@
     color: var(--foreground);
     font-size: 0.78rem;
     line-height: 1.65;
+    overflow-wrap: normal;
+    white-space: pre;
+    word-break: normal;
   }
   .docs-prose table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
     width: 100%;
     border-collapse: collapse;
     font-size: 0.8rem;
@@ -244,5 +263,12 @@
     border-left: 2px solid var(--primary);
     background: color-mix(in oklch, var(--primary) 7%, transparent);
     padding: 0.75rem 1rem;
+  }
+  .docs-prose img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
   }
 }

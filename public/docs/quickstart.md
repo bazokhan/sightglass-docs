@@ -1,10 +1,8 @@
----
-slug: quickstart
-title: Quickstart
-summary: Run Sightglass and observe one important operation in a few minutes.
-group: Getting started
-order: 10
----
+# Quickstart
+
+Run Sightglass and observe one important operation in a few minutes.
+
+Canonical HTML: https://sightglass-docs.vercel.app/docs/quickstart
 
 Sightglass is one container plus the SDK packages your application needs. Installing an SDK is silent until you explicitly wrap an operation.
 

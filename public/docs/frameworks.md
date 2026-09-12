@@ -1,10 +1,8 @@
----
-slug: frameworks
-title: Framework adapters
-summary: Instrument Express, tsoa, Fastify, NestJS, Next.js Route Handlers, and Prisma.
-group: SDKs
-order: 30
----
+# Framework adapters
+
+Instrument Express, tsoa, Fastify, NestJS, Next.js Route Handlers, and Prisma.
+
+Canonical HTML: https://sightglass-docs.vercel.app/docs/frameworks
 
 Every adapter depends on `@bazokhan/sightglass-core`. Install only the adapter your application uses.
 

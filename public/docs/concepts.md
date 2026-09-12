@@ -1,10 +1,8 @@
----
-slug: concepts
-title: Product model
-summary: Understand operations, occurrences, context, events, steps, dependencies, and meters.
-group: Getting started
-order: 20
----
+# Product model
+
+Understand operations, occurrences, context, events, steps, dependencies, and meters.
+
+Canonical HTML: https://sightglass-docs.vercel.app/docs/concepts
 
 Sightglass records only business operations you deliberately mark. Its primary record is an information-dense occurrence rather than a stream of logs, spans, or arbitrary metrics.
 

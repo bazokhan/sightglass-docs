@@ -13,6 +13,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: `${B.name} — ${B.tagline}` },
       { property: "og:description", content: B.positioning },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/product/operations.svg" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
@@ -68,7 +69,7 @@ function Index() {
                 {
                   label: "Docker",
                   filename: "terminal",
-                  code: `docker run -d --name sightglass \\\n  -p 7777:7777 \\\n  -v sightglass-data:/data \\\n  sightglasshq/sightglass:0.1.0`,
+                  code: `docker run -d --name sightglass \\\n  -p 7777:7777 \\\n  -v sightglass-data:/data \\\n  bazokhan/sightglass:0.1.0`,
                 },
               ]}
             />
@@ -106,6 +107,48 @@ function Index() {
             </div>
           </div>
         </section>
+        <section className="border-b border-border bg-surface/20">
+          <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
+            <div className="max-w-2xl">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-primary">
+                The answers are already connected
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">
+                From a slow operation to the exact step, query, and customer impact.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Sightglass keeps business context beside runtime evidence, so you can investigate
+                without stitching together logs, traces, and billing exports.
+              </p>
+            </div>
+            <ProductShot
+              src="/product/operations.svg"
+              alt="Sightglass operations dashboard showing execution volume, latency, and errors"
+              eyebrow="Know where to look"
+              title="A calm overview of only the operations you chose to observe."
+              copy="Compare volume, tail latency, and errors without building queries or maintaining dashboards."
+              priority
+            />
+            <ProductShot
+              src="/product/occurrence.svg"
+              alt="Sightglass occurrence detail showing context, steps, a Prisma query, and a usage event"
+              eyebrow="Explain what happened"
+              title="Every occurrence tells one coherent story."
+              copy="See bounded business context, steps, database work, outbound calls, events, and the final outcome in execution order."
+              reverse
+            />
+            <ProductShot
+              src="/product/meters.svg"
+              alt="Sightglass usage meter ledger showing per-tenant product usage"
+              eyebrow="Meter with evidence"
+              title="Durable usage records stay tied to the work that produced them."
+              copy="Use idempotent meters for billing and limits, then move directly from an aggregate to its supporting executions."
+            />
+            <p className="mt-5 text-center font-mono text-[10px] text-muted-foreground">
+              Product renders use representative sample data.
+            </p>
+          </div>
+        </section>
         <section className="bg-surface/30">
           <div className="mx-auto grid max-w-6xl gap-8 px-5 py-16 lg:grid-cols-2">
             <div>
@@ -138,6 +181,50 @@ function Index() {
       </main>
       <SiteFooter />
     </div>
+  );
+}
+
+function ProductShot({
+  src,
+  alt,
+  eyebrow,
+  title,
+  copy,
+  reverse = false,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  eyebrow: string;
+  title: string;
+  copy: string;
+  reverse?: boolean;
+  priority?: boolean;
+}) {
+  return (
+    <article
+      className={`mt-12 grid min-w-0 gap-6 lg:grid-cols-[1.55fr_0.75fr] lg:items-center ${
+        reverse ? "lg:[&>div]:order-first lg:[&>figure]:order-last" : ""
+      }`}
+    >
+      <figure className={reverse ? "lg:order-2" : ""}>
+        <div className="overflow-hidden rounded-lg border border-border bg-background shadow-2xl shadow-black/20">
+          <img
+            src={src}
+            alt={alt}
+            className="block h-auto w-full"
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
+          />
+        </div>
+      </figure>
+      <div className={reverse ? "lg:order-1" : ""}>
+        <p className="font-mono text-[11px] uppercase tracking-wider text-primary">{eyebrow}</p>
+        <h3 className="mt-2 text-xl font-semibold">{title}</h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy}</p>
+      </div>
+    </article>
   );
 }
 

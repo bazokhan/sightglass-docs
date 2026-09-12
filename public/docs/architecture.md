@@ -1,10 +1,8 @@
----
-slug: architecture
-title: Architecture
-summary: See how explicit application instrumentation reaches the single-process SQLite server.
-group: Operating
-order: 80
----
+# Architecture
+
+See how explicit application instrumentation reaches the single-process SQLite server.
+
+Canonical HTML: https://sightglass-docs.vercel.app/docs/architecture
 
 Sightglass has three runtime layers:
 
