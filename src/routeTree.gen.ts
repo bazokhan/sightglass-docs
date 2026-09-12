@@ -13,6 +13,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as DemoIndexRouteImport } from './routes/demo.index'
+import { Route as DemoHealthRouteImport } from './routes/demo.health'
+import { Route as DemoQueriesRouteImport } from './routes/demo.queries'
+import { Route as DemoSecurityRouteImport } from './routes/demo.security'
+import { Route as DemoUsageRouteImport } from './routes/demo.usage'
 import { Route as DocsIndexRouteImport } from './routes/docs.index'
 import { Route as DocsSlugRouteImport } from './routes/docs.$slug'
 import { Route as DemoOccurrencesIdRouteImport } from './routes/demo.occurrences.$id'
@@ -37,6 +41,26 @@ const DocsRoute = DocsRouteImport.update({
 const DemoIndexRoute = DemoIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoHealthRoute = DemoHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoQueriesRoute = DemoQueriesRouteImport.update({
+  id: '/queries',
+  path: '/queries',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoSecurityRoute = DemoSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoUsageRoute = DemoUsageRouteImport.update({
+  id: '/usage',
+  path: '/usage',
   getParentRoute: () => DemoRoute,
 } as any)
 const DocsIndexRoute = DocsIndexRouteImport.update({
@@ -69,6 +93,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/demo': typeof DemoRouteWithChildren
   '/docs': typeof DocsRouteWithChildren
+  '/demo/health': typeof DemoHealthRoute
+  '/demo/queries': typeof DemoQueriesRoute
+  '/demo/security': typeof DemoSecurityRoute
+  '/demo/usage': typeof DemoUsageRoute
   '/docs/$slug': typeof DocsSlugRoute
   '/demo/': typeof DemoIndexRoute
   '/docs/': typeof DocsIndexRoute
@@ -78,6 +106,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/demo/health': typeof DemoHealthRoute
+  '/demo/queries': typeof DemoQueriesRoute
+  '/demo/security': typeof DemoSecurityRoute
+  '/demo/usage': typeof DemoUsageRoute
   '/docs/$slug': typeof DocsSlugRoute
   '/demo': typeof DemoIndexRoute
   '/docs': typeof DocsIndexRoute
@@ -90,6 +122,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/demo': typeof DemoRouteWithChildren
   '/docs': typeof DocsRouteWithChildren
+  '/demo/health': typeof DemoHealthRoute
+  '/demo/queries': typeof DemoQueriesRoute
+  '/demo/security': typeof DemoSecurityRoute
+  '/demo/usage': typeof DemoUsageRoute
   '/docs/$slug': typeof DocsSlugRoute
   '/demo/': typeof DemoIndexRoute
   '/docs/': typeof DocsIndexRoute
@@ -103,6 +139,10 @@ export interface FileRouteTypes {
     | '/'
     | '/demo'
     | '/docs'
+    | '/demo/health'
+    | '/demo/queries'
+    | '/demo/security'
+    | '/demo/usage'
     | '/docs/$slug'
     | '/demo/'
     | '/docs/'
@@ -112,6 +152,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/demo/health'
+    | '/demo/queries'
+    | '/demo/security'
+    | '/demo/usage'
     | '/docs/$slug'
     | '/demo'
     | '/docs'
@@ -123,6 +167,10 @@ export interface FileRouteTypes {
     | '/'
     | '/demo'
     | '/docs'
+    | '/demo/health'
+    | '/demo/queries'
+    | '/demo/security'
+    | '/demo/usage'
     | '/docs/$slug'
     | '/demo/'
     | '/docs/'
@@ -167,6 +215,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoIndexRouteImport
       parentRoute: typeof DemoRoute
     }
+    '/demo/health': {
+      id: '/demo/health'
+      path: '/health'
+      fullPath: '/demo/health'
+      preLoaderRoute: typeof DemoHealthRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/queries': {
+      id: '/demo/queries'
+      path: '/queries'
+      fullPath: '/demo/queries'
+      preLoaderRoute: typeof DemoQueriesRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/security': {
+      id: '/demo/security'
+      path: '/security'
+      fullPath: '/demo/security'
+      preLoaderRoute: typeof DemoSecurityRouteImport
+      parentRoute: typeof DemoRoute
+    }
+    '/demo/usage': {
+      id: '/demo/usage'
+      path: '/usage'
+      fullPath: '/demo/usage'
+      preLoaderRoute: typeof DemoUsageRouteImport
+      parentRoute: typeof DemoRoute
+    }
     '/docs/': {
       id: '/docs/'
       path: '/'
@@ -206,6 +282,10 @@ declare module '@tanstack/react-router' {
 }
 
 interface DemoRouteChildren {
+  DemoHealthRoute: typeof DemoHealthRoute
+  DemoQueriesRoute: typeof DemoQueriesRoute
+  DemoSecurityRoute: typeof DemoSecurityRoute
+  DemoUsageRoute: typeof DemoUsageRoute
   DemoIndexRoute: typeof DemoIndexRoute
   DemoOccurrencesIdRoute: typeof DemoOccurrencesIdRoute
   DemoOperationsIdRoute: typeof DemoOperationsIdRoute
@@ -213,6 +293,10 @@ interface DemoRouteChildren {
 }
 
 const DemoRouteChildren: DemoRouteChildren = {
+  DemoHealthRoute: DemoHealthRoute,
+  DemoQueriesRoute: DemoQueriesRoute,
+  DemoSecurityRoute: DemoSecurityRoute,
+  DemoUsageRoute: DemoUsageRoute,
   DemoIndexRoute: DemoIndexRoute,
   DemoOccurrencesIdRoute: DemoOccurrencesIdRoute,
   DemoOperationsIdRoute: DemoOperationsIdRoute,
