@@ -28,11 +28,11 @@ function parse(source: string, path: string): DocPage {
       }),
   );
   return {
-    slug: metadata.slug!,
-    title: metadata.title!,
-    summary: metadata.summary!,
-    group: metadata.group!,
-    order: Number(metadata.order),
+    slug: metadata["slug"]!,
+    title: metadata["title"]!,
+    summary: metadata["summary"]!,
+    group: metadata["group"]!,
+    order: Number(metadata["order"]),
     content: match[2]!.trim(),
   };
 }
