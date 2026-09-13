@@ -10,6 +10,12 @@ Sightglass is one container plus the SDK packages your application needs. Instal
 
 ![Sightglass operations dashboard with sample execution, latency, and error data](/product/operations.svg)
 
+## Requirements
+
+- A Node.js application running Node 22.13 or newer
+- Docker for the self-hosted server
+- Network access from the application to the Sightglass ingestion endpoint
+
 ## Run the server
 
 ```bash
@@ -35,6 +41,17 @@ For a framework, install core and the adapter, for example:
 ```bash
 npm install @bazokhan/sightglass-core @bazokhan/sightglass-express
 ```
+
+Choose packages by integration:
+
+| Integration            | Packages                                                                                   |
+| ---------------------- | ------------------------------------------------------------------------------------------ |
+| Plain Node.js          | `@bazokhan/sightglass-core`                                                                |
+| Express or tsoa        | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-express`                             |
+| Fastify                | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-fastify`                             |
+| NestJS                 | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-nest`                                |
+| Next.js Route Handlers | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-next`                                |
+| Prisma                 | `@bazokhan/sightglass-core`, your web-framework adapter, and `@bazokhan/sightglass-prisma` |
 
 ## Configure once
 
@@ -65,3 +82,7 @@ const result = await checkout();
 ```
 
 Unwrapped work stays invisible. Before process exit, stop accepting work and call `await shutdownSightglass()` to drain buffered telemetry.
+
+## Confirm delivery
+
+Open `http://localhost:7777`, run the observed operation once, and select the matching service and environment. If nothing appears, check that the application can reach the configured `endpoint` and that its `apiKey` matches `SIGHTGLASS_API_KEY` on the server.

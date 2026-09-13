@@ -131,14 +131,9 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  html,
-  body,
-  #root {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
   body {
+    min-width: 0;
+    margin: 0;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
@@ -175,6 +170,9 @@
     color: color-mix(in oklch, var(--foreground) 86%, transparent);
     font-size: 0.9rem;
     line-height: 1.75;
+  }
+  .docs-prose > * {
+    max-width: 100%;
   }
   .docs-prose h2 {
     margin: 2rem 0 0.65rem;

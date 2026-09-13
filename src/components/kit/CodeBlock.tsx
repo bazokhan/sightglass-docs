@@ -26,7 +26,7 @@ export function CodeBlock({ code, language = "ts", filename, className, dense }:
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-md border border-border bg-surface",
+        "group relative min-w-0 max-w-full overflow-hidden rounded-md border border-border bg-surface",
         className,
       )}
     >
@@ -46,7 +46,7 @@ export function CodeBlock({ code, language = "ts", filename, className, dense }:
       </div>
       <pre
         className={cn(
-          "overflow-x-auto px-4 text-[12.5px] leading-relaxed text-foreground/90",
+          "block w-full min-w-0 max-w-full overflow-x-auto px-4 text-[12.5px] leading-relaxed text-foreground/90",
           dense ? "py-2.5" : "py-3.5",
         )}
       >

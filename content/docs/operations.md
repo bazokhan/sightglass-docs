@@ -17,9 +17,44 @@ SIGHTGLASS_ERROR_RETENTION_DAYS=30
 SIGHTGLASS_AGGREGATE_RETENTION_DAYS=365
 ```
 
+`SIGHTGLASS_DASHBOARD_PATH` is available when the server and dashboard are deployed separately. The published container already includes the dashboard, so most deployments should leave it unset.
+
+## Docker Compose
+
+```yaml
+services:
+  sightglass:
+    image: bazokhan/sightglass:0.1.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:7777:7777"
+    environment:
+      SIGHTGLASS_API_KEY: ${SIGHTGLASS_API_KEY}
+    volumes:
+      - sightglass-data:/data
+
+volumes:
+  sightglass-data:
+```
+
+After startup, `GET http://127.0.0.1:7777/healthz` should return `{"status":"ok"}`.
+
 ## Security boundary
 
 The API key authenticates ingestion only. Bind Sightglass to a trusted private network or put it behind a reverse proxy that authenticates all dashboard and read API requests. Terminate TLS at that boundary.
+
+## Upgrades
+
+Back up the database before changing image versions. Pin a versioned image tag in production, read the release notes, pull the new image, and recreate the container with the same `/data` volume. Upgrade the SDK packages together so core and adapters stay on the same release line.
+
+## Troubleshooting
+
+- **The dashboard does not load:** request `/healthz`; if it fails, inspect the container logs and confirm port `7777` is published.
+- **The dashboard loads but has no data:** run an observed operation, verify the configured endpoint is reachable from the application, and make sure the application key matches the server key.
+- **Ingestion returns 401:** the `Authorization` bearer value does not match `SIGHTGLASS_API_KEY`.
+- **Data disappears after recreation:** mount a persistent volume at `/data`; an unmounted container filesystem is ephemeral.
+- **Shutdown loses the newest telemetry:** stop accepting application work first, then await `shutdownSightglass()` before exiting.
+- **Dashboard reads need login:** Sightglass does not authenticate reads; enforce authentication and TLS at a reverse proxy or private-network boundary.
 
 ## Persistence and recovery
 

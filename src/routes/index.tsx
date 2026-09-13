@@ -26,13 +26,13 @@ function Index() {
       <SiteHeader />
       <main>
         <section className="grid-bg border-b border-border">
-          <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:py-24">
-            <div>
-              <div className="mb-5 inline-flex items-center gap-2 border border-primary/30 bg-primary/5 px-2.5 py-1 font-mono text-[11px] text-primary">
+          <div className="mx-auto grid min-w-0 max-w-6xl gap-10 px-5 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:py-24">
+            <div className="min-w-0">
+              <div className="mb-5 inline-flex max-w-full flex-wrap items-center gap-2 border border-primary/30 bg-primary/5 px-2.5 py-1 font-mono text-[11px] text-primary">
                 <span className="size-1.5 rounded-full bg-primary" />
                 Node.js · TypeScript · self-hosted
               </div>
-              <h1 className="max-w-2xl text-4xl font-semibold leading-tight sm:text-5xl">
+              <h1 className="max-w-2xl text-3xl font-semibold leading-[1.12] tracking-tight sm:text-5xl">
                 Application observability for developers who do not want an observability stack.
               </h1>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
@@ -40,17 +40,17 @@ function Index() {
                 which database or outbound call was slow, and what each customer used—without
                 collecting everything else.
               </p>
-              <div className="mt-7 flex flex-wrap gap-3">
+              <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
                 <Link
                   to="/docs/$slug"
                   params={{ slug: "quickstart" }}
-                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+                  className="inline-flex min-w-0 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-center text-sm font-medium text-primary-foreground"
                 >
                   Start the quickstart <ArrowRight className="size-4" />
                 </Link>
                 <a
                   href="https://github.com/bazokhan/sightglass"
-                  className="inline-flex items-center rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40"
+                  className="inline-flex min-w-0 items-center justify-center rounded-md border border-border bg-surface px-4 py-2.5 text-center text-sm font-medium text-foreground hover:border-primary/40"
                 >
                   View on GitHub
                 </a>
@@ -60,6 +60,7 @@ function Index() {
               </p>
             </div>
             <CodeTabs
+              className="min-w-0 max-w-full"
               tabs={[
                 {
                   label: "Core",

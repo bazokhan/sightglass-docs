@@ -13,7 +13,7 @@ export function CodeTabs({ tabs, className }: { tabs: CodeTab[]; className?: str
   const tab = tabs[active];
 
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn("min-w-0 max-w-full space-y-2", className)}>
       <div className="flex flex-wrap gap-1">
         {tabs.map((t, i) => (
           <button
