@@ -11,21 +11,57 @@ export const Route = createFileRoute("/docs/$slug")({
     if (!doc) throw notFound();
     return { doc };
   },
-  head: ({ loaderData }) => ({
+  head: ({ params, loaderData }) => ({
     meta: loaderData
       ? [
           { title: `${loaderData.doc.title} — ${B.name} docs` },
           { name: "description", content: loaderData.doc.summary },
           { property: "og:title", content: `${loaderData.doc.title} — ${B.name} docs` },
           { property: "og:description", content: loaderData.doc.summary },
+          { property: "og:type", content: "article" },
+          { property: "og:url", content: `/docs/${params.slug}` },
+          { name: "twitter:title", content: `${loaderData.doc.title} — ${B.name} docs` },
+          { name: "twitter:description", content: loaderData.doc.summary },
         ]
       : [{ title: `Page not found — ${B.name} docs` }, { name: "robots", content: "noindex" }],
     links: loaderData
       ? [
+          { rel: "canonical", href: `/docs/${params.slug}` },
           {
             rel: "alternate",
             type: "text/markdown",
             href: `/docs/${loaderData.doc.slug}.md`,
+          },
+        ]
+      : [],
+    scripts: loaderData
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "TechArticle",
+              headline: loaderData.doc.title,
+              description: loaderData.doc.summary,
+              articleSection: loaderData.doc.group,
+              isPartOf: { "@type": "WebSite", name: `${B.name} docs` },
+            }),
+          },
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Docs", item: "/docs" },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: loaderData.doc.title,
+                  item: `/docs/${params.slug}`,
+                },
+              ],
+            }),
           },
         ]
       : [],

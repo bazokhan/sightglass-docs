@@ -8,13 +8,32 @@ import { B } from "@/lib/brand";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `${B.name} — application observability without the stack` },
-      { name: "description", content: B.positioning },
+      { title: `${B.name} — opt-in observability for Node.js apps` },
+      {
+        name: "description",
+        content: `${B.positioning} Self-host one container, instrument the operations that matter, and meter usage durably.`,
+      },
       { property: "og:title", content: `${B.name} — ${B.tagline}` },
       { property: "og:description", content: B.positioning },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "/product/operations.svg" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:url", content: "/" },
+      { name: "twitter:title", content: `${B.name} — ${B.tagline}` },
+      { name: "twitter:description", content: B.positioning },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: B.name,
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Linux, macOS, Windows (Docker)",
+          description: B.positioning,
+          url: B.docsUrl,
+        }),
+      },
     ],
   }),
   component: Index,

@@ -16,7 +16,15 @@ export const Route = createFileRoute("/docs/")({
         property: "og:description",
         content: `Quickstart, framework guides, metering and deployment for ${B.name}.`,
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/docs" },
+      { name: "twitter:title", content: `Documentation — ${B.name}` },
+      {
+        name: "twitter:description",
+        content: `Quickstart, framework guides, metering and deployment for ${B.name}.`,
+      },
     ],
+    links: [{ rel: "canonical", href: "/docs" }],
   }),
   component: DocsIndex,
 });
