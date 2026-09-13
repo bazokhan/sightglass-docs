@@ -5,3 +5,4 @@
 - [ ] Add Queries, Usage, Security, and Health demo screens
 - [ ] Add complete route metadata
 - [ ] Verify desktop and mobile layouts and key interactions
+- [x] Add polished, locally rendered technology brand marks where they aid recognition
