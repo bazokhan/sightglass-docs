@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { B } from "@/lib/brand";
 import { Mark } from "./SiteHeader";
 import { DocsLink } from "./DocsLink";
+import { BrandIcon } from "./BrandIcon";
 
 const linkClass = "text-[13px] text-foreground/80 transition-colors hover:text-primary";
 
@@ -55,7 +56,11 @@ export function SiteFooter() {
           <span>
             {B.name} — {B.tagline}
           </span>
-          <a className="font-mono hover:text-primary" href="https://github.com/bazokhan/sightglass">
+          <a
+            className="inline-flex items-center gap-1.5 font-mono hover:text-primary"
+            href="https://github.com/bazokhan/sightglass"
+          >
+            <BrandIcon name="github" className="size-3" />
             MIT licensed · GitHub
           </a>
         </div>

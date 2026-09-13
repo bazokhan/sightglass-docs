@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { docs, findDoc } from "@/data/docs";
 import { B } from "@/lib/brand";
+import { BrandIcon, brandIconForHeading } from "@/components/site/BrandIcon";
 
 export const Route = createFileRoute("/docs/$slug")({
   loader: ({ params }) => {
@@ -102,7 +103,23 @@ function DocPageView() {
         </a>
       </div>
       <div className="docs-prose mt-9">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{doc.content}</ReactMarkdown>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h2: ({ children, ...props }) => {
+              const title = String(children);
+              const icon = brandIconForHeading(title);
+              return (
+                <h2 {...props} className={icon ? "flex items-center gap-2" : undefined}>
+                  {icon ? <BrandIcon name={icon} className="size-4 text-muted-foreground" /> : null}
+                  {children}
+                </h2>
+              );
+            },
+          }}
+        >
+          {doc.content}
+        </ReactMarkdown>
       </div>
       <nav
         className="mt-12 flex min-w-0 items-center justify-between gap-4 border-t border-border pt-5"

@@ -3,6 +3,8 @@ import { ArrowRight, Check, Database, Gauge, LockKeyhole, ScanSearch } from "luc
 import { CodeTabs } from "@/components/kit/CodeTabs";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { BrandIcon } from "@/components/site/BrandIcon";
+import { TechnologyStrip } from "@/components/site/TechnologyStrip";
 import { B } from "@/lib/brand";
 
 export const Route = createFileRoute("/")({
@@ -69,8 +71,9 @@ function Index() {
                 </Link>
                 <a
                   href="https://github.com/bazokhan/sightglass"
-                  className="inline-flex min-w-0 items-center justify-center rounded-md border border-border bg-surface px-4 py-2.5 text-center text-sm font-medium text-foreground hover:border-primary/40"
+                  className="inline-flex min-w-0 items-center justify-center gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-center text-sm font-medium text-foreground hover:border-primary/40"
                 >
+                  <BrandIcon name="github" className="size-4" />
                   View on GitHub
                 </a>
               </div>
@@ -95,6 +98,7 @@ function Index() {
             />
           </div>
         </section>
+        <TechnologyStrip />
         <section className="border-b border-border">
           <div className="mx-auto max-w-6xl px-5 py-16">
             <p className="font-mono text-[11px] uppercase tracking-wider text-primary">

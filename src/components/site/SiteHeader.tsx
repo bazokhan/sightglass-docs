@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { B } from "@/lib/brand";
 import { cn } from "@/lib/utils";
+import { BrandIcon } from "./BrandIcon";
 
 export function Mark({ className }: { className?: string }) {
   return (
@@ -72,8 +73,9 @@ export function SiteHeader() {
           </Link>
           <a
             href="https://github.com/bazokhan/sightglass"
-            className="rounded-md bg-primary px-3 py-1.5 text-[13.5px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-[13.5px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
+            <BrandIcon name="github" className="size-3.5" />
             GitHub
           </a>
         </div>
@@ -100,6 +102,13 @@ export function SiteHeader() {
               {l.label}
             </Link>
           ))}
+          <a
+            href="https://github.com/bazokhan/sightglass"
+            className="flex items-center gap-2 rounded px-2 py-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <BrandIcon name="github" className="size-4" />
+            GitHub
+          </a>
         </div>
       ) : null}
     </header>
