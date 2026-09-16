@@ -92,7 +92,7 @@ function Index() {
                 {
                   label: "Docker",
                   filename: "terminal",
-                  code: `docker run -d --name sightglass \\\n  -p 7777:7777 \\\n  -v sightglass-data:/data \\\n  bazokhan/sightglass:0.1.0`,
+                  code: `docker run -d --name sightglass \\\n  -p 7777:7777 \\\n  -v sightglass-data:/data \\\n  -e SIGHTGLASS_INSECURE_HTTP=true \\\n  bazokhan/sightglass:latest`,
                 },
               ]}
             />
@@ -191,7 +191,7 @@ function Index() {
               {[
                 "Express and tsoa, Fastify, NestJS, and Next.js Route Handlers",
                 "Prisma and native fetch attribution inside observed work",
-                "One SQLite server and an opinionated read-only dashboard",
+                "One SQLite server with a signed-in, opinionated dashboard",
                 "No daemon, external collector, query language, or dashboard builder",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2">

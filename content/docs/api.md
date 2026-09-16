@@ -10,11 +10,12 @@ All timestamps are ISO 8601. Range endpoints accept optional `from` and `to` val
 
 ## Ingestion
 
-`POST /api/v1/ingest` accepts protocol v1 envelopes and returns HTTP 202 with accepted item counts. When `SIGHTGLASS_API_KEY` is configured, send `Authorization: Bearer <key>`.
+`POST /api/v1/ingest` accepts protocol v1 envelopes and returns HTTP 202 with accepted item counts. Send a named ingestion key from **Settings → Keys** as `Authorization: Bearer <key>`. The legacy `SIGHTGLASS_API_KEY` environment variable is also accepted for migration.
 
 ## Read and export endpoints
 
-- `GET /healthz`
+- `GET /healthz` (public liveness)
+- `GET /readyz` (public readiness)
 - `GET /api/v1/services`
 - `GET /api/v1/summary`
 - `GET /api/v1/trend`
@@ -30,4 +31,6 @@ All timestamps are ISO 8601. Range endpoints accept optional `from` and `to` val
 
 Occurrence lists accept `operation`, `status`, `limit`, and `offset`; `limit` is capped at 200. Usage accepts `tenantId`. Export returns CSV by default and JSON with `format=json`.
 
-Read endpoints are intentionally unauthenticated inside Sightglass. Keep the server private or place an authenticating reverse proxy in front of every read and dashboard request.
+Dashboard, read, trace, and export endpoints require a signed-in Sightglass session. State-changing browser requests also require the session's CSRF token. Administration endpoints under `/api/v1/admin` additionally require the `admin` role.
+
+Authentication endpoints cover initial setup, login, logout, invitations, password reset, and password changes. Treat these as application endpoints rather than a stable public integration API; the versioned ingestion protocol is the supported machine-to-machine boundary.

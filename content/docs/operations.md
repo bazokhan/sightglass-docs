@@ -1,65 +1,88 @@
 ---
 slug: operations
 title: Operating Sightglass
-summary: Deploy securely, retain data, back up SQLite, restore safely, and upgrade.
+summary: Deploy securely, manage access, receive alerts, back up SQLite, restore safely, and upgrade.
 group: Operating
 order: 70
 ---
 
+## One-click Coolify deployment
+
+Create a **Docker Compose Empty** resource in Coolify, paste [`coolify-compose.yml`](https://github.com/bazokhan/sightglass/blob/main/coolify-compose.yml), and deploy it. The template creates the public HTTPS route, a persistent `/data` volume, a stable generated installation secret, and a readiness health check.
+
+Open the deployment logs and follow the one-time administrator setup link. The link expires after 24 hours and can be regenerated from a one-off container:
+
+```bash
+node apps/server/dist/cli.js setup-link
+```
+
+Keep one replica. SQLite does not support multiple Sightglass containers writing to the same volume.
+
 ## Server configuration
 
-```env
-SIGHTGLASS_PORT=7777
-SIGHTGLASS_DATABASE_PATH=/data/sightglass.db
-SIGHTGLASS_API_KEY=replace-me
-SIGHTGLASS_SUCCESS_RETENTION_DAYS=7
-SIGHTGLASS_ERROR_RETENTION_DAYS=30
-SIGHTGLASS_AGGREGATE_RETENTION_DAYS=365
+| Variable                              | Purpose                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `SIGHTGLASS_PORT`                     | HTTP port; defaults to `7777`.                                                             |
+| `SIGHTGLASS_DATABASE_PATH`            | SQLite path; the image uses `/data/sightglass.db`.                                         |
+| `SIGHTGLASS_PUBLIC_URL`               | Exact public origin used in setup, invitation, and reset links.                            |
+| `SIGHTGLASS_SECRET`                   | Stable secret used to encrypt stored SMTP and S3 credentials.                              |
+| `SIGHTGLASS_TRUST_PROXY`              | Set to `true` behind Coolify or another trusted reverse proxy.                             |
+| `SIGHTGLASS_INSECURE_HTTP`            | Local development escape hatch for non-secure cookies; never enable on public deployments. |
+| `SIGHTGLASS_UPDATE_CHECKS`            | Set to `false` to disable GitHub release checks.                                           |
+| `SIGHTGLASS_API_KEY`                  | Optional legacy static ingestion key; named UI-managed keys are preferred.                 |
+| `SIGHTGLASS_SUCCESS_RETENTION_DAYS`   | Successful raw occurrence retention; defaults to `7`.                                      |
+| `SIGHTGLASS_ERROR_RETENTION_DAYS`     | Failed raw occurrence retention; defaults to `30`.                                         |
+| `SIGHTGLASS_AGGREGATE_RETENTION_DAYS` | Aggregate and health retention; defaults to `365`.                                         |
+
+The published container includes the dashboard. `SIGHTGLASS_DASHBOARD_PATH` is only needed when running the server and dashboard separately.
+
+## Access and ingestion keys
+
+The first account created through the setup link is an administrator. Administrators can:
+
+- invite an administrator or user by email;
+- create an account with a temporary password;
+- change roles or disable accounts without removing audit history;
+- configure SMTP and send a test message;
+- create and revoke named ingestion keys.
+
+Temporary-password users must change their password after the first login. Invitation and reset links are single-use and expire. Named ingestion keys are displayed once and stored as hashes.
+
+Dashboard sessions use HTTP-only cookies, idle and absolute expiry, and CSRF protection. Terminate TLS at the reverse proxy and set `SIGHTGLASS_PUBLIC_URL` and `SIGHTGLASS_TRUST_PROXY=true` correctly.
+
+## Notifications and alerts
+
+Configure SMTP in **Settings → Email**, then select alert recipients in **Settings → Alerts**. Sightglass can notify administrators or selected users about elevated error rate, high p95 latency, service silence, low disk space, and process restarts. Alerts have a cooldown and send a recovery message when the condition clears.
+
+Sightglass retries a failed SMTP send once. Configuration and delivery failures are recorded without blocking ingestion.
+
+## Backups and recovery
+
+Daily local online backups are enabled by default and written under `/data/backups`. Configure retention, download the newest backup, or run one immediately from **Settings → Backups**. Optional S3-compatible upload supports AWS S3 and providers with a custom endpoint and path-style mode.
+
+Backups are integrity-checked before being marked successful. To verify or restore offline:
+
+```bash
+node apps/server/dist/cli.js backup /data/backups/manual.sqlite
+node apps/server/dist/cli.js verify-backup /data/backups/manual.sqlite
+node apps/server/dist/cli.js restore /data/backups/manual.sqlite
 ```
 
-`SIGHTGLASS_DASHBOARD_PATH` is available when the server and dashboard are deployed separately. The published container already includes the dashboard, so most deployments should leave it unset.
-
-## Docker Compose
-
-```yaml
-services:
-  sightglass:
-    image: bazokhan/sightglass:0.1.0
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:7777:7777"
-    environment:
-      SIGHTGLASS_API_KEY: ${SIGHTGLASS_API_KEY}
-    volumes:
-      - sightglass-data:/data
-
-volumes:
-  sightglass-data:
-```
-
-After startup, `GET http://127.0.0.1:7777/healthz` should return `{"status":"ok"}`.
-
-## Security boundary
-
-The API key authenticates ingestion only. Bind Sightglass to a trusted private network or put it behind a reverse proxy that authenticates all dashboard and read API requests. Terminate TLS at that boundary.
+Stop the normal Sightglass container before restore. Restore creates a safety copy of the current database and invalidates existing sessions. If `SIGHTGLASS_SECRET` is not supplied explicitly, also protect `/data/.secret`; without it, restored SMTP and S3 credentials cannot be decrypted.
 
 ## Upgrades
 
-Back up the database before changing image versions. Pin a versioned image tag in production, read the release notes, pull the new image, and recreate the container with the same `/data` volume. Upgrade the SDK packages together so core and adapters stay on the same release line.
+The administration screen checks the latest GitHub release and shows the installed container version. Back up first, read the release notes, then let Coolify pull the new image and recreate the single container with the same `/data` volume. Sightglass deliberately does not control the Docker socket or replace its own container.
 
-## Troubleshooting
+Pin a version tag when you require controlled upgrades. Use `latest` when you prefer Coolify's update workflow. Do not downgrade an upgraded database without restoring a matching backup.
 
-- **The dashboard does not load:** request `/healthz`; if it fails, inspect the container logs and confirm port `7777` is published.
-- **The dashboard loads but has no data:** run an observed operation, verify the configured endpoint is reachable from the application, and make sure the application key matches the server key.
-- **Ingestion returns 401:** the `Authorization` bearer value does not match `SIGHTGLASS_API_KEY`.
-- **Data disappears after recreation:** mount a persistent volume at `/data`; an unmounted container filesystem is ephemeral.
-- **Shutdown loses the newest telemetry:** stop accepting application work first, then await `shutdownSightglass()` before exiting.
-- **Dashboard reads need login:** Sightglass does not authenticate reads; enforce authentication and TLS at a reverse proxy or private-network boundary.
+## Health and troubleshooting
 
-## Persistence and recovery
-
-SQLite runs in WAL mode at `/data/sightglass.db`. Use SQLite's online backup operation while the service is running, or stop the container before copying the database plus its `-wal` and `-shm` companions. Never copy only the main database while writes continue.
-
-Restore while Sightglass is stopped, then start the same or a newer image. Ordered schema migrations run transactionally at startup. Back up before upgrading, and do not downgrade an upgraded database without restoring a matching backup.
-
-Successful raw occurrences default to 7 days, errors to 30 days, and ordinary aggregates and health samples to 365 days. Exact meter rows and compact meter totals are retained indefinitely.
+- `GET /healthz` reports process liveness.
+- `GET /readyz` reports whether the server and database are ready for traffic.
+- **Setup link is wrong:** set `SIGHTGLASS_PUBLIC_URL` to the exact external origin and regenerate the link.
+- **Login loops over HTTP:** use HTTPS, or set `SIGHTGLASS_INSECURE_HTTP=true` only for local development.
+- **Ingestion returns 401:** create an active key under **Settings → Keys** and send it as the bearer token.
+- **Email does not arrive:** save SMTP settings and use the test-email action before enabling invitations or alerts.
+- **Data disappears after recreation:** restore the persistent volume at `/data`; an unmounted container filesystem is ephemeral.
+- **Shutdown loses newest telemetry:** stop accepting application work first, then await `shutdownSightglass()` before exiting.

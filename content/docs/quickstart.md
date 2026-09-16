@@ -22,11 +22,18 @@ Sightglass is one container plus the SDK packages your application needs. Instal
 docker run -d --name sightglass \
   -p 7777:7777 \
   -v sightglass-data:/data \
-  -e SIGHTGLASS_API_KEY=replace-me \
-  bazokhan/sightglass:0.1.0
+  -e SIGHTGLASS_PUBLIC_URL=http://localhost:7777 \
+  -e SIGHTGLASS_INSECURE_HTTP=true \
+  bazokhan/sightglass:latest
 ```
 
-Open `http://localhost:7777`. Keep this port on a trusted network because the API key protects ingestion, not dashboard reads.
+Read the one-time administrator setup link from the container logs, open it, and create the first account:
+
+```bash
+docker logs sightglass
+```
+
+The link expires after 24 hours. After signing in, open **Settings → Keys**, create an ingestion key, and copy it immediately. Sightglass stores only the key hash, so the value cannot be shown again.
 
 ## Install the SDK
 
@@ -62,7 +69,7 @@ configureSightglass({
   service: "billing-api",
   environment: "production",
   endpoint: "http://sightglass:7777",
-  apiKey: process.env.SIGHTGLASS_API_KEY,
+  apiKey: process.env.SIGHTGLASS_INGESTION_KEY,
 });
 ```
 
@@ -85,4 +92,6 @@ Unwrapped work stays invisible. Before process exit, stop accepting work and cal
 
 ## Confirm delivery
 
-Open `http://localhost:7777`, run the observed operation once, and select the matching service and environment. If nothing appears, check that the application can reach the configured `endpoint` and that its `apiKey` matches `SIGHTGLASS_API_KEY` on the server.
+Open `http://localhost:7777`, sign in, run the observed operation once, and select the matching service and environment. If nothing appears, check that the application can reach the configured `endpoint` and that its `apiKey` is an active key from **Settings → Keys**.
+
+`SIGHTGLASS_INSECURE_HTTP=true` is only for local HTTP. Production deployments must use HTTPS and should omit it.
