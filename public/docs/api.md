@@ -2,7 +2,7 @@
 
 Reference the versioned ingestion, dashboard, trace, usage, and health endpoints.
 
-Canonical HTML: https://sightglass-docs.vercel.app/docs/api
+Canonical HTML: https://sightglass-docs.trugraph.io/docs/api
 
 All timestamps are ISO 8601. Range endpoints accept optional `from` and `to` values and default to the last 24 hours. `service` and `environment` filters have the same meaning everywhere.
 

@@ -2,7 +2,7 @@
 
 Compare Sightglass with ten broader observability products using narrow, explicit definitions.
 
-Canonical HTML: https://sightglass-docs.vercel.app/docs/comparison
+Canonical HTML: https://sightglass-docs.trugraph.io/docs/comparison
 
 Checked 12 September 2026 against official public pricing, deployment, and licensing material. `✓` means native, `◐` means partial or configurable, and `×` means absent or not a core product capability.
 

@@ -1,6 +1,8 @@
 # Sightglass documentation
 
-The public documentation and product site for [Sightglass](https://github.com/bazokhan/sightglass), built with TanStack Start, React, Tailwind CSS, and Nitro.
+The public documentation and product site for [Sightglass](https://github.com/bazokhan/sightglass), built with TanStack Start, React, Tailwind CSS, and Nitro. The production site and canonical URL is [sightglass-docs.trugraph.io](https://sightglass-docs.trugraph.io).
+
+Official distributions: [npm packages](https://www.npmjs.com/search?q=%40bazokhan%2Fsightglass), [Docker image](https://hub.docker.com/r/bazokhan/sightglass), and [GitHub releases](https://github.com/bazokhan/sightglass/releases).
 
 Canonical documentation lives in `content/docs`. The site does not contain seeded product data or fictional capabilities.
 

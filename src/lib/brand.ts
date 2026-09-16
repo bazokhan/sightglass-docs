@@ -10,8 +10,19 @@ export const brand = {
   npmScope: "@bazokhan",
   npmPackage: "@bazokhan/sightglass-core",
   dockerImage: "bazokhan/sightglass",
+  releaseVersion: "0.1.2",
   port: 7777,
-  docsUrl: "https://sightglass-docs.vercel.app",
+  docsUrl: "https://sightglass-docs.trugraph.io",
+  sourceUrl: "https://github.com/bazokhan/sightglass",
+  docsSourceUrl: "https://github.com/bazokhan/sightglass-docs",
+  releasesUrl: "https://github.com/bazokhan/sightglass/releases",
+  npmUrl: "https://www.npmjs.com/package/@bazokhan/sightglass-core",
+  npmScopeUrl: "https://www.npmjs.com/search?q=%40bazokhan%2Fsightglass",
+  dockerUrl: "https://hub.docker.com/r/bazokhan/sightglass",
 } as const;
 
 export const B = brand;
+
+export function siteUrl(path = "/"): string {
+  return new URL(path, `${brand.docsUrl}/`).toString();
+}

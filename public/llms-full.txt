@@ -2,9 +2,11 @@
 
 Run Sightglass and observe one important operation in a few minutes.
 
-Source: https://sightglass-docs.vercel.app/docs/quickstart
+Source: https://sightglass-docs.trugraph.io/docs/quickstart
 
 Sightglass is one container plus the SDK packages your application needs. Installing an SDK is silent until you explicitly wrap an operation.
+
+Use only the official [`@bazokhan/sightglass-*` npm packages](https://www.npmjs.com/search?q=%40bazokhan%2Fsightglass) and the [`bazokhan/sightglass` Docker image](https://hub.docker.com/r/bazokhan/sightglass). Release notes and versioned source are published on [GitHub](https://github.com/bazokhan/sightglass/releases).
 
 ![Sightglass operations dashboard with sample execution, latency, and error data](/product/operations.svg)
 
@@ -49,14 +51,14 @@ npm install @bazokhan/sightglass-core @bazokhan/sightglass-express
 
 Choose packages by integration:
 
-| Integration            | Packages                                                                                   |
-| ---------------------- | ------------------------------------------------------------------------------------------ |
-| Plain Node.js          | `@bazokhan/sightglass-core`                                                                |
-| Express or tsoa        | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-express`                             |
-| Fastify                | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-fastify`                             |
-| NestJS                 | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-nest`                                |
-| Next.js Route Handlers | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-next`                                |
-| Prisma                 | `@bazokhan/sightglass-core`, your web-framework adapter, and `@bazokhan/sightglass-prisma` |
+| Integration            | Packages                                                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Plain Node.js          | [`@bazokhan/sightglass-core`](https://www.npmjs.com/package/@bazokhan/sightglass-core)                                           |
+| Express or tsoa        | Core and [`@bazokhan/sightglass-express`](https://www.npmjs.com/package/@bazokhan/sightglass-express)                            |
+| Fastify                | Core and [`@bazokhan/sightglass-fastify`](https://www.npmjs.com/package/@bazokhan/sightglass-fastify)                            |
+| NestJS                 | Core and [`@bazokhan/sightglass-nest`](https://www.npmjs.com/package/@bazokhan/sightglass-nest)                                  |
+| Next.js Route Handlers | Core and [`@bazokhan/sightglass-next`](https://www.npmjs.com/package/@bazokhan/sightglass-next)                                  |
+| Prisma                 | Core, your web-framework adapter, and [`@bazokhan/sightglass-prisma`](https://www.npmjs.com/package/@bazokhan/sightglass-prisma) |
 
 ## Configure once
 
@@ -100,7 +102,7 @@ Open `http://localhost:7777`, sign in, run the observed operation once, and sele
 
 Understand operations, occurrences, context, events, steps, dependencies, and meters.
 
-Source: https://sightglass-docs.vercel.app/docs/concepts
+Source: https://sightglass-docs.trugraph.io/docs/concepts
 
 Sightglass records only business operations you deliberately mark. Its primary record is an information-dense occurrence rather than a stream of logs, spans, or arbitrary metrics.
 
@@ -133,11 +135,13 @@ Sightglass is not log aggregation, browser monitoring, infrastructure monitoring
 
 Instrument Express, tsoa, Fastify, NestJS, Next.js Route Handlers, and Prisma.
 
-Source: https://sightglass-docs.vercel.app/docs/frameworks
+Source: https://sightglass-docs.trugraph.io/docs/frameworks
 
-Every adapter depends on `@bazokhan/sightglass-core`. Install only the adapter your application uses.
+Every adapter depends on [`@bazokhan/sightglass-core`](https://www.npmjs.com/package/@bazokhan/sightglass-core). Install only the adapter your application uses.
 
 ## Express and tsoa
+
+Package: [`@bazokhan/sightglass-express`](https://www.npmjs.com/package/@bazokhan/sightglass-express)
 
 ```ts
 import { configureSightglass, observe as sightglass } from "@bazokhan/sightglass-core";
@@ -154,6 +158,8 @@ The `@Observe()` method decorator from `@bazokhan/sightglass-express` also suppo
 
 ## Fastify
 
+Package: [`@bazokhan/sightglass-fastify`](https://www.npmjs.com/package/@bazokhan/sightglass-fastify)
+
 ```ts
 import { observe, sightglass } from "@bazokhan/sightglass-fastify";
 
@@ -165,9 +171,13 @@ app.post("/checkout", {
 
 ## NestJS
 
+Package: [`@bazokhan/sightglass-nest`](https://www.npmjs.com/package/@bazokhan/sightglass-nest)
+
 Import `SightglassModule.forRoot(...)`, decorate a controller or method with `@Observe("name")`, and use `@NoObserve()` for exclusions. The module registers the interceptor globally and drains telemetry during application shutdown.
 
 ## Next.js
+
+Package: [`@bazokhan/sightglass-next`](https://www.npmjs.com/package/@bazokhan/sightglass-next)
 
 ```ts
 import { observe } from "@bazokhan/sightglass-next";
@@ -178,6 +188,8 @@ export const POST = observe("checkout", async () => Response.json({ ok: true }))
 Only server Route Handlers are supported. Page rendering, React Server Components, static assets, prefetching, browser activity, and Server Actions are not observed.
 
 ## Prisma
+
+Package: [`@bazokhan/sightglass-prisma`](https://www.npmjs.com/package/@bazokhan/sightglass-prisma)
 
 ```ts
 import { withSightglass } from "@bazokhan/sightglass-prisma";
@@ -192,7 +204,7 @@ The extension records model/action timing inside an active operation. It never s
 
 Configure delivery, bounds, durability, fetch enrichment, health samples, and diagnostics.
 
-Source: https://sightglass-docs.vercel.app/docs/configuration
+Source: https://sightglass-docs.trugraph.io/docs/configuration
 
 `configureSightglass()` accepts these options:
 
@@ -221,7 +233,7 @@ Context and event attributes accept at most 32 entries. Keys are limited to 64 c
 
 Reference the versioned ingestion, dashboard, trace, usage, and health endpoints.
 
-Source: https://sightglass-docs.vercel.app/docs/api
+Source: https://sightglass-docs.trugraph.io/docs/api
 
 All timestamps are ISO 8601. Range endpoints accept optional `from` and `to` values and default to the last 24 hours. `service` and `environment` filters have the same meaning everywhere.
 
@@ -258,7 +270,7 @@ Authentication endpoints cover initial setup, login, logout, invitations, passwo
 
 Understand protocol v1 envelopes, validation, limits, and trace correlation.
 
-Source: https://sightglass-docs.vercel.app/docs/protocol
+Source: https://sightglass-docs.trugraph.io/docs/protocol
 
 The SDK sends protocol v1 envelopes containing `occurrences`, `meters`, and `health` arrays. The body limit is 1 MiB. A batch accepts at most 100 occurrences, 500 meter events, and 100 health samples.
 
@@ -272,7 +284,7 @@ Occurrences carry W3C-compatible trace, span, and optional parent identifiers. S
 
 Deploy securely, manage access, receive alerts, back up SQLite, restore safely, and upgrade.
 
-Source: https://sightglass-docs.vercel.app/docs/operations
+Source: https://sightglass-docs.trugraph.io/docs/operations
 
 ## One-click Coolify deployment
 
@@ -340,7 +352,7 @@ Stop the normal Sightglass container before restore. Restore creates a safety co
 
 ## Upgrades
 
-The administration screen checks the latest GitHub release and shows the installed container version. Back up first, read the release notes, then let Coolify pull the new image and recreate the single container with the same `/data` volume. Sightglass deliberately does not control the Docker socket or replace its own container.
+The administration screen checks the latest [GitHub release](https://github.com/bazokhan/sightglass/releases) and shows the installed container version. Back up first, read the release notes, then let Coolify pull the image from [Docker Hub](https://hub.docker.com/r/bazokhan/sightglass) and recreate the single container with the same `/data` volume. Sightglass deliberately does not control the Docker socket or replace its own container.
 
 Pin a version tag when you require controlled upgrades. Use `latest` when you prefer Coolify's update workflow. Do not downgrade an upgraded database without restoring a matching backup.
 
@@ -361,7 +373,7 @@ Pin a version tag when you require controlled upgrades. Use `latest` when you pr
 
 See how explicit application instrumentation reaches the single-process SQLite server.
 
-Source: https://sightglass-docs.vercel.app/docs/architecture
+Source: https://sightglass-docs.trugraph.io/docs/architecture
 
 Sightglass has three runtime layers:
 
@@ -379,7 +391,7 @@ The deployment boundary is one process, one port, one SQLite file, one persisten
 
 Interpret and reproduce Sightglass ingestion, query, and storage measurements.
 
-Source: https://sightglass-docs.vercel.app/docs/benchmarks
+Source: https://sightglass-docs.trugraph.io/docs/benchmarks
 
 The benchmark suite builds the real server, creates isolated temporary databases, and records raw samples before generating summary tables and SVG charts. It measures HTTP ingestion, representative dashboard queries, and SQLite storage footprint.
 
@@ -421,7 +433,7 @@ The [machine-readable result](/benchmarks/latest.json) includes every raw sample
 
 Compare Sightglass with ten broader observability products using narrow, explicit definitions.
 
-Source: https://sightglass-docs.vercel.app/docs/comparison
+Source: https://sightglass-docs.trugraph.io/docs/comparison
 
 Checked 12 September 2026 against official public pricing, deployment, and licensing material. `✓` means native, `◐` means partial or configurable, and `×` means absent or not a core product capability.
 

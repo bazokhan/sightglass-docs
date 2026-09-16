@@ -2,7 +2,7 @@
 
 See how explicit application instrumentation reaches the single-process SQLite server.
 
-Canonical HTML: https://sightglass-docs.vercel.app/docs/architecture
+Canonical HTML: https://sightglass-docs.trugraph.io/docs/architecture
 
 Sightglass has three runtime layers:
 

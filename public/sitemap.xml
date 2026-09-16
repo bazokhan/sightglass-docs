@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://sightglass-docs.vercel.app/</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/quickstart</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/concepts</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/frameworks</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/configuration</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/api</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/protocol</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/operations</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/architecture</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/benchmarks</loc></url>
-  <url><loc>https://sightglass-docs.vercel.app/docs/comparison</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/quickstart</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/concepts</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/frameworks</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/configuration</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/api</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/protocol</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/operations</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/architecture</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/benchmarks</loc></url>
+  <url><loc>https://sightglass-docs.trugraph.io/docs/comparison</loc></url>
 </urlset>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sightglass-docs.vercel.app/sitemap.xml
+Sitemap: https://sightglass-docs.trugraph.io/sitemap.xml

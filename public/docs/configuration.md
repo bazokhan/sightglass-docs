@@ -2,7 +2,7 @@
 
 Configure delivery, bounds, durability, fetch enrichment, health samples, and diagnostics.
 
-Canonical HTML: https://sightglass-docs.vercel.app/docs/configuration
+Canonical HTML: https://sightglass-docs.trugraph.io/docs/configuration
 
 `configureSightglass()` accepts these options:
 

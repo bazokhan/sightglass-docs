@@ -1,11 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Database, Gauge, LockKeyhole, ScanSearch } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Database,
+  ExternalLink,
+  Gauge,
+  LockKeyhole,
+  ScanSearch,
+} from "lucide-react";
 import { CodeTabs } from "@/components/kit/CodeTabs";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { BrandIcon } from "@/components/site/BrandIcon";
 import { TechnologyStrip } from "@/components/site/TechnologyStrip";
-import { B } from "@/lib/brand";
+import { B, siteUrl } from "@/lib/brand";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,11 +26,11 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: `${B.name} — ${B.tagline}` },
       { property: "og:description", content: B.positioning },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: siteUrl() },
       { name: "twitter:title", content: `${B.name} — ${B.tagline}` },
       { name: "twitter:description", content: B.positioning },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: siteUrl() }],
     scripts: [
       {
         type: "application/ld+json",
@@ -70,7 +78,7 @@ function Index() {
                   Start the quickstart <ArrowRight className="size-4" />
                 </Link>
                 <a
-                  href="https://github.com/bazokhan/sightglass"
+                  href={B.sourceUrl}
                   className="inline-flex min-w-0 items-center justify-center gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-center text-sm font-medium text-foreground hover:border-primary/40"
                 >
                   <BrandIcon name="github" className="size-4" />
@@ -99,6 +107,47 @@ function Index() {
           </div>
         </section>
         <TechnologyStrip />
+        <section className="border-b border-border bg-surface/20">
+          <div className="mx-auto max-w-6xl px-5 py-12">
+            <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="font-mono text-[11px] uppercase tracking-wider text-primary">
+                  Get Sightglass
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold">Pick what you need.</h2>
+              </div>
+              <a
+                href={B.releasesUrl}
+                className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-primary"
+              >
+                Current release {B.releaseVersion} <ExternalLink className="size-3" />
+              </a>
+            </div>
+            <div className="mt-7 grid gap-3 md:grid-cols-3">
+              <DistributionLink
+                href={B.npmScopeUrl}
+                icon="npm"
+                title="npm packages"
+                copy="Core plus typed adapters for Express, Fastify, NestJS, Next.js, and Prisma."
+                detail="@bazokhan/sightglass-*"
+              />
+              <DistributionLink
+                href={B.dockerUrl}
+                icon="docker"
+                title="Docker image"
+                copy="The self-hosted server and dashboard, published for AMD64 and ARM64."
+                detail={`${B.dockerImage}:latest`}
+              />
+              <DistributionLink
+                href={B.sourceUrl}
+                icon="github"
+                title="Source and releases"
+                copy="MIT-licensed source, release notes, Compose templates, and issue tracking."
+                detail="github.com/bazokhan/sightglass"
+              />
+            </div>
+          </div>
+        </section>
         <section className="border-b border-border">
           <div className="mx-auto max-w-6xl px-5 py-16">
             <p className="font-mono text-[11px] uppercase tracking-wider text-primary">
@@ -205,6 +254,43 @@ function Index() {
       </main>
       <SiteFooter />
     </div>
+  );
+}
+
+function DistributionLink({
+  href,
+  icon,
+  title,
+  copy,
+  detail,
+}: {
+  href: string;
+  icon: "npm" | "docker" | "github";
+  title: string;
+  copy: string;
+  detail: string;
+}) {
+  const iconClass = {
+    npm: "text-[#cb3837]",
+    docker: "text-[#2496ed]",
+    github: "text-foreground",
+  }[icon];
+
+  return (
+    <a
+      href={href}
+      className="group rounded-md border border-border bg-background p-5 transition-colors hover:border-primary/45"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <BrandIcon name={icon} className={`size-7 ${iconClass}`} decorative={false} />
+          <h3 className="text-sm font-medium">{title}</h3>
+        </div>
+        <ExternalLink className="size-3.5 text-muted-foreground transition-colors group-hover:text-primary" />
+      </div>
+      <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">{copy}</p>
+      <p className="mt-4 break-all font-mono text-[10.5px] text-primary">{detail}</p>
+    </a>
   );
 }
 

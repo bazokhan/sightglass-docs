@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Bot, FileText } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { docs, findDoc } from "@/data/docs";
-import { B } from "@/lib/brand";
+import { B, siteUrl } from "@/lib/brand";
 import { BrandIcon, brandIconForHeading } from "@/components/site/BrandIcon";
 
 export const Route = createFileRoute("/docs/$slug")({
@@ -20,14 +20,14 @@ export const Route = createFileRoute("/docs/$slug")({
           { property: "og:title", content: `${loaderData.doc.title} — ${B.name} docs` },
           { property: "og:description", content: loaderData.doc.summary },
           { property: "og:type", content: "article" },
-          { property: "og:url", content: `/docs/${params.slug}` },
+          { property: "og:url", content: siteUrl(`/docs/${params.slug}`) },
           { name: "twitter:title", content: `${loaderData.doc.title} — ${B.name} docs` },
           { name: "twitter:description", content: loaderData.doc.summary },
         ]
       : [{ title: `Page not found — ${B.name} docs` }, { name: "robots", content: "noindex" }],
     links: loaderData
       ? [
-          { rel: "canonical", href: `/docs/${params.slug}` },
+          { rel: "canonical", href: siteUrl(`/docs/${params.slug}`) },
           {
             rel: "alternate",
             type: "text/markdown",
@@ -45,7 +45,8 @@ export const Route = createFileRoute("/docs/$slug")({
               headline: loaderData.doc.title,
               description: loaderData.doc.summary,
               articleSection: loaderData.doc.group,
-              isPartOf: { "@type": "WebSite", name: `${B.name} docs` },
+              url: siteUrl(`/docs/${params.slug}`),
+              isPartOf: { "@type": "WebSite", name: `${B.name} docs`, url: B.docsUrl },
             }),
           },
           {
@@ -54,12 +55,12 @@ export const Route = createFileRoute("/docs/$slug")({
               "@context": "https://schema.org",
               "@type": "BreadcrumbList",
               itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Docs", item: "/docs" },
+                { "@type": "ListItem", position: 1, name: "Docs", item: siteUrl("/docs") },
                 {
                   "@type": "ListItem",
                   position: 2,
                   name: loaderData.doc.title,
-                  item: `/docs/${params.slug}`,
+                  item: siteUrl(`/docs/${params.slug}`),
                 },
               ],
             }),

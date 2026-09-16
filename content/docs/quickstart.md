@@ -8,6 +8,8 @@ order: 10
 
 Sightglass is one container plus the SDK packages your application needs. Installing an SDK is silent until you explicitly wrap an operation.
 
+Use only the official [`@bazokhan/sightglass-*` npm packages](https://www.npmjs.com/search?q=%40bazokhan%2Fsightglass) and the [`bazokhan/sightglass` Docker image](https://hub.docker.com/r/bazokhan/sightglass). Release notes and versioned source are published on [GitHub](https://github.com/bazokhan/sightglass/releases).
+
 ![Sightglass operations dashboard with sample execution, latency, and error data](/product/operations.svg)
 
 ## Requirements
@@ -51,14 +53,14 @@ npm install @bazokhan/sightglass-core @bazokhan/sightglass-express
 
 Choose packages by integration:
 
-| Integration            | Packages                                                                                   |
-| ---------------------- | ------------------------------------------------------------------------------------------ |
-| Plain Node.js          | `@bazokhan/sightglass-core`                                                                |
-| Express or tsoa        | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-express`                             |
-| Fastify                | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-fastify`                             |
-| NestJS                 | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-nest`                                |
-| Next.js Route Handlers | `@bazokhan/sightglass-core` and `@bazokhan/sightglass-next`                                |
-| Prisma                 | `@bazokhan/sightglass-core`, your web-framework adapter, and `@bazokhan/sightglass-prisma` |
+| Integration            | Packages                                                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Plain Node.js          | [`@bazokhan/sightglass-core`](https://www.npmjs.com/package/@bazokhan/sightglass-core)                                           |
+| Express or tsoa        | Core and [`@bazokhan/sightglass-express`](https://www.npmjs.com/package/@bazokhan/sightglass-express)                            |
+| Fastify                | Core and [`@bazokhan/sightglass-fastify`](https://www.npmjs.com/package/@bazokhan/sightglass-fastify)                            |
+| NestJS                 | Core and [`@bazokhan/sightglass-nest`](https://www.npmjs.com/package/@bazokhan/sightglass-nest)                                  |
+| Next.js Route Handlers | Core and [`@bazokhan/sightglass-next`](https://www.npmjs.com/package/@bazokhan/sightglass-next)                                  |
+| Prisma                 | Core, your web-framework adapter, and [`@bazokhan/sightglass-prisma`](https://www.npmjs.com/package/@bazokhan/sightglass-prisma) |
 
 ## Configure once
 

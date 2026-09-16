@@ -72,7 +72,7 @@ export function SiteHeader() {
             Quickstart
           </Link>
           <a
-            href="https://github.com/bazokhan/sightglass"
+            href={B.sourceUrl}
             className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-[13.5px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             <BrandIcon name="github" className="size-3.5" />
@@ -103,7 +103,7 @@ export function SiteHeader() {
             </Link>
           ))}
           <a
-            href="https://github.com/bazokhan/sightglass"
+            href={B.sourceUrl}
             className="flex items-center gap-2 rounded px-2 py-2 text-sm text-muted-foreground hover:text-foreground"
           >
             <BrandIcon name="github" className="size-4" />

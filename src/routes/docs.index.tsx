@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { docGroups, docs } from "@/data/docs";
-import { B } from "@/lib/brand";
+import { B, siteUrl } from "@/lib/brand";
 
 export const Route = createFileRoute("/docs/")({
   head: () => ({
@@ -17,14 +17,14 @@ export const Route = createFileRoute("/docs/")({
         content: `Quickstart, framework guides, metering and deployment for ${B.name}.`,
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/docs" },
+      { property: "og:url", content: siteUrl("/docs") },
       { name: "twitter:title", content: `Documentation — ${B.name}` },
       {
         name: "twitter:description",
         content: `Quickstart, framework guides, metering and deployment for ${B.name}.`,
       },
     ],
-    links: [{ rel: "canonical", href: "/docs" }],
+    links: [{ rel: "canonical", href: siteUrl("/docs") }],
   }),
   component: DocsIndex,
 });

@@ -6,6 +6,7 @@ import {
   siNestjs,
   siNextdotjs,
   siNodedotjs,
+  siNpm,
   siPrisma,
   siTypescript,
 } from "simple-icons";
@@ -21,6 +22,7 @@ export const brandIcons = {
   nestjs: siNestjs,
   nextjs: siNextdotjs,
   nodejs: siNodedotjs,
+  npm: siNpm,
   prisma: siPrisma,
   typescript: siTypescript,
 } as const satisfies Record<string, IconData>;

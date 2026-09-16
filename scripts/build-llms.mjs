@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 const root = resolve(".");
 const contentDirectory = resolve(root, "content/docs");
 const outputDirectory = resolve(root, "public/docs");
-const canonicalUrl = "https://sightglass-docs.vercel.app";
+const canonicalUrl = "https://sightglass-docs.trugraph.io";
 
 function parseDocument(file) {
   const source = readFileSync(resolve(contentDirectory, file), "utf8").replace(/\r\n/g, "\n");
@@ -67,7 +67,13 @@ const index = [
   "- Source: https://github.com/bazokhan/sightglass",
   "- Documentation source: https://github.com/bazokhan/sightglass-docs",
   "- Core SDK: https://www.npmjs.com/package/@bazokhan/sightglass-core",
-  "- Docker: https://hub.docker.com/r/bazokhan/sightglass",
+  "- Express adapter: https://www.npmjs.com/package/@bazokhan/sightglass-express",
+  "- Fastify adapter: https://www.npmjs.com/package/@bazokhan/sightglass-fastify",
+  "- NestJS adapter: https://www.npmjs.com/package/@bazokhan/sightglass-nest",
+  "- Next.js adapter: https://www.npmjs.com/package/@bazokhan/sightglass-next",
+  "- Prisma adapter: https://www.npmjs.com/package/@bazokhan/sightglass-prisma",
+  "- Docker image: https://hub.docker.com/r/bazokhan/sightglass",
+  "- Releases: https://github.com/bazokhan/sightglass/releases",
   "",
 ].join("\n");
 

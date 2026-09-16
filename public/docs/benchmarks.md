@@ -2,7 +2,7 @@
 
 Interpret and reproduce Sightglass ingestion, query, and storage measurements.
 
-Canonical HTML: https://sightglass-docs.vercel.app/docs/benchmarks
+Canonical HTML: https://sightglass-docs.trugraph.io/docs/benchmarks
 
 The benchmark suite builds the real server, creates isolated temporary databases, and records raw samples before generating summary tables and SVG charts. It measures HTTP ingestion, representative dashboard queries, and SQLite storage footprint.
 

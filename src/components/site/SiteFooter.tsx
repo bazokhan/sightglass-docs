@@ -10,7 +10,7 @@ const linkClass = "text-[13px] text-foreground/80 transition-colors hover:text-p
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-surface/40">
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:grid-cols-2 lg:grid-cols-5">
         <div>
           <Mark className="text-foreground" />
           <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-muted-foreground">
@@ -50,6 +50,20 @@ export function SiteFooter() {
             Benchmarks
           </DocsLink>
         </FooterCol>
+        <FooterCol title="Resources">
+          <a href={B.npmScopeUrl} className={linkClass}>
+            npm packages
+          </a>
+          <a href={B.dockerUrl} className={linkClass}>
+            Docker Hub
+          </a>
+          <a href={B.releasesUrl} className={linkClass}>
+            Releases
+          </a>
+          <a href={B.docsSourceUrl} className={linkClass}>
+            Docs source
+          </a>
+        </FooterCol>
       </div>
       <div className="border-t border-border/70">
         <div className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-5 text-[12px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
@@ -58,7 +72,7 @@ export function SiteFooter() {
           </span>
           <a
             className="inline-flex items-center gap-1.5 font-mono hover:text-primary"
-            href="https://github.com/bazokhan/sightglass"
+            href={B.sourceUrl}
           >
             <BrandIcon name="github" className="size-3" />
             MIT licensed · GitHub

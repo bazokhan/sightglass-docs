@@ -72,7 +72,7 @@ Stop the normal Sightglass container before restore. Restore creates a safety co
 
 ## Upgrades
 
-The administration screen checks the latest GitHub release and shows the installed container version. Back up first, read the release notes, then let Coolify pull the new image and recreate the single container with the same `/data` volume. Sightglass deliberately does not control the Docker socket or replace its own container.
+The administration screen checks the latest [GitHub release](https://github.com/bazokhan/sightglass/releases) and shows the installed container version. Back up first, read the release notes, then let Coolify pull the image from [Docker Hub](https://hub.docker.com/r/bazokhan/sightglass) and recreate the single container with the same `/data` volume. Sightglass deliberately does not control the Docker socket or replace its own container.
 
 Pin a version tag when you require controlled upgrades. Use `latest` when you prefer Coolify's update workflow. Do not downgrade an upgraded database without restoring a matching backup.
 

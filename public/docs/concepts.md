@@ -2,7 +2,7 @@
 
 Understand operations, occurrences, context, events, steps, dependencies, and meters.
 
-Canonical HTML: https://sightglass-docs.vercel.app/docs/concepts
+Canonical HTML: https://sightglass-docs.trugraph.io/docs/concepts
 
 Sightglass records only business operations you deliberately mark. Its primary record is an information-dense occurrence rather than a stream of logs, spans, or arbitrary metrics.
 
