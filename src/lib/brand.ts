@@ -10,7 +10,7 @@ export const brand = {
   npmScope: "@bazokhan",
   npmPackage: "@bazokhan/sightglass-core",
   dockerImage: "bazokhan/sightglass",
-  releaseVersion: "0.1.2",
+  releaseVersion: "0.1.3",
   port: 7777,
   docsUrl: "https://sightglass-docs.trugraph.io",
   sourceUrl: "https://github.com/bazokhan/sightglass",
