@@ -105,6 +105,11 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          defer
+          src="https://analytics.trugraph.io/script.js"
+          data-website-id="68fa7749-d98e-479d-99b9-e368ac959e9d"
+        />
       </head>
       <body>
         {children}
