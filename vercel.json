@@ -3,9 +3,21 @@
   "framework": "tanstack-start",
   "redirects": [
     {
+      "source": "/",
+      "has": [{ "type": "host", "value": "sightglass-docs.vercel.app" }],
+      "destination": "https://sightglass-docs.trugraph.io/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "sightglass-docs.vercel.app" }],
       "destination": "https://sightglass-docs.trugraph.io/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "sightglass-observability-without-noise.vercel.app" }],
+      "destination": "https://sightglass-docs.trugraph.io/",
       "permanent": true
     },
     {
