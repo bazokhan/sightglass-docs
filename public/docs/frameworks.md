@@ -2,7 +2,7 @@
 
 Instrument Express, tsoa, Fastify, NestJS, Next.js Route Handlers, and Prisma.
 
-Canonical HTML: https://sightglass-docs.trugraph.io/docs/frameworks
+Canonical HTML: https://sightglass.trugraph.io/docs/frameworks
 
 Every adapter depends on [`@bazokhan/sightglass-core`](https://www.npmjs.com/package/@bazokhan/sightglass-core). Install only the adapter your application uses.
 

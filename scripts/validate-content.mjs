@@ -64,7 +64,7 @@ for (const artifact of ["public/llms.txt", "public/llms-full.txt"]) {
   const generated = readFileSync(resolve(artifact), "utf8");
   if (!generated.includes("Sightglass")) throw new Error(`${artifact} was not generated correctly`);
 }
-if (!readFileSync(resolve("public/sitemap.xml"), "utf8").includes("sightglass-docs.trugraph.io")) {
+if (!readFileSync(resolve("public/sitemap.xml"), "utf8").includes("sightglass.trugraph.io")) {
   throw new Error("public/sitemap.xml was not generated correctly");
 }
 

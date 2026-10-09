@@ -13,36 +13,30 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { BrandIcon } from "@/components/site/BrandIcon";
 import { TechnologyStrip } from "@/components/site/TechnologyStrip";
-import { B, siteUrl } from "@/lib/brand";
+import { B } from "@/lib/brand";
+import { buildSeo, softwareAppJsonLd } from "@/lib/seo";
+
+const indexSeo = buildSeo({
+  title: "Opt-in observability for Node.js apps",
+  description: `${B.positioning} Self-host one container, instrument the operations that matter, and meter usage durably.`,
+  path: "/",
+  type: "website",
+  keywords: [
+    "tracing alternative",
+    "OpenTelemetry alternative",
+    "Sentry alternative",
+    "Datadog alternative",
+    "self-hosted",
+  ],
+});
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [
-      { title: `${B.name} — opt-in observability for Node.js apps` },
-      {
-        name: "description",
-        content: `${B.positioning} Self-host one container, instrument the operations that matter, and meter usage durably.`,
-      },
-      { property: "og:title", content: `${B.name} — ${B.tagline}` },
-      { property: "og:description", content: B.positioning },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: siteUrl() },
-      { name: "twitter:title", content: `${B.name} — ${B.tagline}` },
-      { name: "twitter:description", content: B.positioning },
-    ],
-    links: [{ rel: "canonical", href: siteUrl() }],
+    ...indexSeo,
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: B.name,
-          applicationCategory: "DeveloperApplication",
-          operatingSystem: "Linux, macOS, Windows (Docker)",
-          description: B.positioning,
-          url: B.docsUrl,
-        }),
+        children: JSON.stringify(softwareAppJsonLd()),
       },
     ],
   }),

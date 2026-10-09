@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { B } from "../lib/brand";
+import { buildSeo, organizationJsonLd, websiteJsonLd } from "../lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -73,25 +74,27 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const rootSeo = buildSeo({
+  title: B.name,
+  description: `${B.positioning} ${B.tagline} One self-hosted container, explicit SDK calls, and durable usage meters for Node.js and TypeScript.`,
+  keywords: ["sightglass", "documentation", "quickstart", "API reference"],
+  path: "/",
+  type: "website",
+});
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: `${B.name} — application observability for developers` },
-      { name: "description", content: B.positioning },
-      { name: "author", content: B.name },
-      { property: "og:site_name", content: B.name },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "theme-color", content: "#111417" },
-    ],
-    links: [
+    meta: [{ title: B.name }, ...rootSeo.meta.slice(1)],
+    links: rootSeo.links,
+    scripts: [
       {
-        rel: "stylesheet",
-        href: appCss,
+        type: "application/ld+json",
+        children: JSON.stringify(websiteJsonLd()),
       },
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(organizationJsonLd()),
+      },
     ],
   }),
   shellComponent: RootShell,

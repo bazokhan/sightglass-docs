@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 const root = resolve(".");
 const contentDirectory = resolve(root, "content/docs");
 const outputDirectory = resolve(root, "public/docs");
-const canonicalUrl = "https://sightglass-docs.trugraph.io";
+const canonicalUrl = "https://sightglass.trugraph.io";
 
 function parseDocument(file) {
   const source = readFileSync(resolve(contentDirectory, file), "utf8").replace(/\r\n/g, "\n");

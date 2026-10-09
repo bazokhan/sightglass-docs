@@ -2,7 +2,7 @@
 
 Deploy securely, manage access, receive alerts, back up SQLite, restore safely, and upgrade.
 
-Canonical HTML: https://sightglass-docs.trugraph.io/docs/operations
+Canonical HTML: https://sightglass.trugraph.io/docs/operations
 
 ## One-click Coolify deployment
 

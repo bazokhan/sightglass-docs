@@ -1,31 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { docGroups, docs } from "@/data/docs";
-import { B, siteUrl } from "@/lib/brand";
+import { B } from "@/lib/brand";
+import { buildSeo } from "@/lib/seo";
+
+const docsIndexSeo = buildSeo({
+  title: "Documentation",
+  description: `Everything needed to run ${B.name}: quickstart, framework guides, metering, deployment, and scope. Browse docs grouped by stage.`,
+  path: "/docs",
+  type: "website",
+  keywords: ["docs index", "documentation", "all guides"],
+});
 
 export const Route = createFileRoute("/docs/")({
-  head: () => ({
-    meta: [
-      { title: `Documentation — ${B.name}` },
-      {
-        name: "description",
-        content: `Everything needed to run ${B.name}: quickstart, framework guides, metering, deployment and scope.`,
-      },
-      { property: "og:title", content: `Documentation — ${B.name}` },
-      {
-        property: "og:description",
-        content: `Quickstart, framework guides, metering and deployment for ${B.name}.`,
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: siteUrl("/docs") },
-      { name: "twitter:title", content: `Documentation — ${B.name}` },
-      {
-        name: "twitter:description",
-        content: `Quickstart, framework guides, metering and deployment for ${B.name}.`,
-      },
-    ],
-    links: [{ rel: "canonical", href: siteUrl("/docs") }],
-  }),
+  head: () => docsIndexSeo,
   component: DocsIndex,
 });
 

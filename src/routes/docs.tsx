@@ -3,22 +3,18 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { docGroups, docs } from "@/data/docs";
 import { B } from "@/lib/brand";
+import { buildSeo } from "@/lib/seo";
+
+const docsSeo = buildSeo({
+  title: "Documentation",
+  description: `Setup, framework guides, and concepts for ${B.name}: opt-in application observability you self-host in one container. Quickstart, Express/Fastify/NestJS/Next.js adapters, Prisma attribution, durable metering, and operations guides.`,
+  path: "/docs",
+  type: "website",
+  keywords: ["documentation index", "guides", "framework adapters", "deployment"],
+});
 
 export const Route = createFileRoute("/docs")({
-  head: () => ({
-    meta: [
-      { title: `${B.name} docs — instrument one operation at a time` },
-      {
-        name: "description",
-        content: `Setup, framework guides and concepts for ${B.name}: opt-in application observability you self-host in one container.`,
-      },
-      { property: "og:title", content: `${B.name} docs` },
-      {
-        property: "og:description",
-        content: `Quickstart, NestJS, Next.js, metering and deployment guides for ${B.name}.`,
-      },
-    ],
-  }),
+  head: () => docsSeo,
   component: DocsLayout,
 });
 

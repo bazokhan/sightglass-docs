@@ -2,7 +2,7 @@
 
 Run Sightglass and observe one important operation in a few minutes.
 
-Canonical HTML: https://sightglass-docs.trugraph.io/docs/quickstart
+Canonical HTML: https://sightglass.trugraph.io/docs/quickstart
 
 Sightglass is one container plus the SDK packages your application needs. Installing an SDK is silent until you explicitly wrap an operation.
 

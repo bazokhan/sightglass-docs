@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c0e10"/>
+      <stop offset="1" stop-color="#111417"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0v48" fill="none" stroke="#1c2024" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="32" y="32" width="1136" height="566" rx="20" fill="none" stroke="#22272c" stroke-width="1.5"/>
+
+  <g transform="translate(96, 180)">
+    <rect width="96" height="96" rx="20" fill="#111417" stroke="#2dd4bf" stroke-opacity="0.45" stroke-width="2"/>
+    <rect x="6" y="6" width="84" height="84" rx="16" fill="none" stroke="#2dd4bf" stroke-opacity="0.18" stroke-width="1"/>
+    <path d="M22 64h18l8-30 8 18h20" fill="none" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <text x="96" y="360" fill="#f5f7f8" font-family="Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="92" font-weight="700" letter-spacing="-2.5">Sightglass</text>
+
+  <text x="96" y="420" fill="#9aa3ab" font-family="Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="30" font-weight="500">Mark what matters. We show you what happened.</text>
+
+  <g transform="translate(96, 500)">
+    <text fill="#2dd4bf" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="500">Node.js</text>
+    <text x="120" fill="#2dd4bf" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="500">·</text>
+    <text x="140" fill="#2dd4bf" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="500">TypeScript</text>
+    <text x="270" fill="#2dd4bf" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="500">·</text>
+    <text x="290" fill="#2dd4bf" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="500">self-hosted</text>
+  </g>
+
+  <g transform="translate(1104, 540)" text-anchor="end">
+    <text fill="#6b727a" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20" font-weight="500">sightglass.trugraph.io</text>
+  </g>
+</svg>

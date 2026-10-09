@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { docs, findDoc } from "@/data/docs";
 import { B, siteUrl } from "@/lib/brand";
+import { buildSeo } from "@/lib/seo";
 import { BrandIcon, brandIconForHeading } from "@/components/site/BrandIcon";
 
 export const Route = createFileRoute("/docs/$slug")({
@@ -12,62 +13,66 @@ export const Route = createFileRoute("/docs/$slug")({
     if (!doc) throw notFound();
     return { doc };
   },
-  head: ({ params, loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: `${loaderData.doc.title} — ${B.name} docs` },
-          { name: "description", content: loaderData.doc.summary },
-          { property: "og:title", content: `${loaderData.doc.title} — ${B.name} docs` },
-          { property: "og:description", content: loaderData.doc.summary },
-          { property: "og:type", content: "article" },
-          { property: "og:url", content: siteUrl(`/docs/${params.slug}`) },
-          { name: "twitter:title", content: `${loaderData.doc.title} — ${B.name} docs` },
-          { name: "twitter:description", content: loaderData.doc.summary },
-        ]
-      : [{ title: `Page not found — ${B.name} docs` }, { name: "robots", content: "noindex" }],
-    links: loaderData
-      ? [
-          { rel: "canonical", href: siteUrl(`/docs/${params.slug}`) },
-          {
-            rel: "alternate",
-            type: "text/markdown",
-            href: `/docs/${loaderData.doc.slug}.md`,
-          },
-        ]
-      : [],
-    scripts: loaderData
-      ? [
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "TechArticle",
-              headline: loaderData.doc.title,
-              description: loaderData.doc.summary,
-              articleSection: loaderData.doc.group,
-              url: siteUrl(`/docs/${params.slug}`),
-              isPartOf: { "@type": "WebSite", name: `${B.name} docs`, url: B.docsUrl },
-            }),
-          },
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Docs", item: siteUrl("/docs") },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: loaderData.doc.title,
-                  item: siteUrl(`/docs/${params.slug}`),
-                },
-              ],
-            }),
-          },
-        ]
-      : [],
-  }),
+  head: ({ params, loaderData }) => {
+    if (!loaderData) {
+      const notFoundSeo = buildSeo({
+        title: "Page not found",
+        description: `The requested ${B.name} documentation page does not exist. Browse the docs index for the available guides.`,
+        path: `/docs/${params.slug}`,
+        noindex: true,
+      });
+      return notFoundSeo;
+    }
+    const { doc } = loaderData;
+    const docUrl = siteUrl(`/docs/${doc.slug}`);
+    const seo = buildSeo({
+      title: doc.title,
+      description: doc.summary,
+      path: `/docs/${doc.slug}`,
+      type: "article",
+      keywords: [doc.group, ...doc.slug.split("-")],
+    });
+    return {
+      ...seo,
+      links: [
+        ...seo.links,
+        { rel: "alternate", type: "text/markdown", href: `/docs/${doc.slug}.md` },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "TechArticle",
+            headline: doc.title,
+            description: doc.summary,
+            articleSection: doc.group,
+            url: docUrl,
+            isPartOf: { "@type": "WebSite", name: `${B.name} docs`, url: B.docsUrl },
+            inLanguage: "en",
+            author: { "@type": "Organization", name: "Trugraph", url: "https://trugraph.io" },
+            publisher: { "@type": "Organization", name: "Trugraph", url: "https://trugraph.io" },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Docs", item: siteUrl("/docs") },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: doc.title,
+                item: docUrl,
+              },
+            ],
+          }),
+        },
+      ],
+    };
+  },
   notFoundComponent: () => (
     <div>
       <h1 className="text-xl font-semibold">That page does not exist</h1>

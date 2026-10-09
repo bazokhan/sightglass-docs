@@ -12,7 +12,7 @@ export const brand = {
   dockerImage: "bazokhan/sightglass",
   releaseVersion: "0.1.3",
   port: 7777,
-  docsUrl: "https://sightglass-docs.trugraph.io",
+  docsUrl: "https://sightglass.trugraph.io",
   sourceUrl: "https://github.com/bazokhan/sightglass",
   docsSourceUrl: "https://github.com/bazokhan/sightglass-docs",
   releasesUrl: "https://github.com/bazokhan/sightglass/releases",
