@@ -85,7 +85,7 @@ const rootSeo = buildSeo({
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [{ title: B.name }, ...rootSeo.meta.slice(1)],
-    links: rootSeo.links,
+    links: [...rootSeo.links, { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -104,6 +104,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  // The build's React 19 + TanStack Router pipeline drops both <link
+  // rel="stylesheet"> and <style> children from the SSR <head>, so the
+  // CSS is loaded from a useEffect on the client. There is a brief FOUC;
+  // a real fix needs the manifest's per-route `css` field populated,
+  // which the current Vite plugin doesn't do.
+  useStylesheet(appCss);
   return (
     <html lang="en">
       <head>
@@ -120,6 +126,16 @@ function RootShell({ children }: { children: ReactNode }) {
       </body>
     </html>
   );
+}
+
+function useStylesheet(href: string) {
+  useEffect(() => {
+    if (document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.appendChild(link);
+  }, [href]);
 }
 
 function RootComponent() {

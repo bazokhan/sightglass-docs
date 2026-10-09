@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { docGroups, docs } from "@/data/docs";
 import { B } from "@/lib/brand";
 import { buildSeo } from "@/lib/seo";
+import appCss from "@/styles.css?url";
 
 const docsSeo = buildSeo({
   title: "Documentation",
@@ -14,7 +15,10 @@ const docsSeo = buildSeo({
 });
 
 export const Route = createFileRoute("/docs")({
-  head: () => docsSeo,
+  head: () => ({
+    ...docsSeo,
+    links: [{ rel: "stylesheet", href: appCss }, ...docsSeo.links],
+  }),
   component: DocsLayout,
 });
 
