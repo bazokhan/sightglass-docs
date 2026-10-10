@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
-import appCss from "../styles.css?url";
+import "../styles.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { B } from "../lib/brand";
 import { buildSeo, organizationJsonLd, websiteJsonLd } from "../lib/seo";
@@ -104,12 +104,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
-  // The build's React 19 + TanStack Router pipeline drops both <link
-  // rel="stylesheet"> and <style> children from the SSR <head>, so the
-  // CSS is loaded from a useEffect on the client. There is a brief FOUC;
-  // a real fix needs the manifest's per-route `css` field populated,
-  // which the current Vite plugin doesn't do.
-  useStylesheet(appCss);
   return (
     <html lang="en">
       <head>
@@ -126,16 +120,6 @@ function RootShell({ children }: { children: ReactNode }) {
       </body>
     </html>
   );
-}
-
-function useStylesheet(href: string) {
-  useEffect(() => {
-    if (document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) return;
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = href;
-    document.head.appendChild(link);
-  }, [href]);
 }
 
 function RootComponent() {
